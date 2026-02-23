@@ -22,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    <html lang="es" className={spaceGrotesk.variable}>
       <head>
         <style>
           {`
@@ -36,7 +36,7 @@ export default function RootLayout({
           `}
         </style>
       </head>
-      <body className={`${spaceGrotesk.variable} antialiased`}>
+      <body className="antialiased">
         <Header />
         <FloatingContact />
         {children}

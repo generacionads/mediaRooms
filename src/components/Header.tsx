@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import BtnMenu from "@/components/ui/BtnMenu";
 import BtnPry from "@/components/ui/BtnPry";
 import Enlaces from "@/components/ui/Enlaces";
@@ -20,14 +21,14 @@ export default function Header() {
           transition: "height 0.8s cubic-bezier(0.76, 0, 0.24, 1)"
         }}
       >
-        <div className="flex items-center gap-[2px] pt-[12px] pointer-events-auto">
+        <Link href="/" className="flex items-center gap-[2px] pt-[12px] pointer-events-auto cursor-pointer">
           <span className="font-['Gebuk'] text-[47px] tracking-[-0.94px] text-white">
             media
           </span>
           <span className="font-['Gebuk'] text-[47px] tracking-[-0.47px] text-[#083e45]">
             Rooms
           </span>
-        </div>
+        </Link>
 
         <div className="pointer-events-auto z-10 w-fit h-fit">
           <BtnMenu

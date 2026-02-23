@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { motion } from "framer-motion";
@@ -12,9 +12,10 @@ export type BtnRoundedProps = {
     className?: string;
     variant?: "telf-closed" | "telf-open" | "mail-closed" | "mail-open" | "name_closed" | "name_open";
     interactive?: boolean;
+    isForcedOpen?: boolean;
 };
 
-export default function BtnRounded({ className, variant = "telf-closed", interactive = true }: BtnRoundedProps) {
+export default function BtnRounded({ className, variant = "telf-closed", interactive = true, isForcedOpen = false }: BtnRoundedProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const closedTextRef = useRef<HTMLParagraphElement>(null);
     const openTextRef = useRef<HTMLParagraphElement>(null);
@@ -22,6 +23,12 @@ export default function BtnRounded({ className, variant = "telf-closed", interac
     // Use a ref to store the timeline so we can control it on enter/leave
     const tlRef = useRef<gsap.core.Timeline | null>(null);
     const isHoveredRef = useRef(false);
+
+    // Track the external forced state in a ref to bypass GSAP's stale closures
+    const isForcedOpenRef = useRef(isForcedOpen);
+    useEffect(() => {
+        isForcedOpenRef.current = isForcedOpen;
+    }, [isForcedOpen]);
 
     // Initial styling Setup based on variant
     const isName = variant === "name_closed" || variant === "name_open";
@@ -46,8 +53,8 @@ export default function BtnRounded({ className, variant = "telf-closed", interac
         const tl = gsap.timeline({
             paused: true,
             onComplete: () => {
-                // When finishing the expansion, if the user already moved away, reverse it
-                if (!isHoveredRef.current) {
+                // Read from the ref to avoid stale closures catching the initial 'false' render state
+                if (!isHoveredRef.current && !isForcedOpenRef.current) {
                     tl.reverse();
                 }
             }
@@ -84,8 +91,19 @@ export default function BtnRounded({ className, variant = "telf-closed", interac
         tlRef.current = tl;
     }, []);
 
+    // Effect to monitor external forced triggers
+    useEffect(() => {
+        if (!tlRef.current) return;
+        if (isForcedOpen) {
+            tlRef.current.play();
+        } else if (!isHoveredRef.current) {
+            // Only reverse to close if the user isn't physically hovering over it
+            tlRef.current.reverse();
+        }
+    }, [isForcedOpen]);
+
     const handleMouseEnter = () => {
-        if (!interactive) return;
+        if (!interactive || isForcedOpen) return;
         isHoveredRef.current = true;
         if (tlRef.current) {
             tlRef.current.play();
@@ -93,7 +111,7 @@ export default function BtnRounded({ className, variant = "telf-closed", interac
     };
 
     const handleMouseLeave = () => {
-        if (!interactive) return;
+        if (!interactive || isForcedOpen) return;
         isHoveredRef.current = false;
         if (tlRef.current) {
             // Only reverse if the timeline is already done playing forward
