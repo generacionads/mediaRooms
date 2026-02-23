@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #083E45;
+  --color-brand-accent: #48d7de;
+
+  --font-sans: var(--font-space-grotesk), sans-serif;
+  --font-gebuk: "Gebuk", sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-brand-primary text-white font-sans;
+  }
+}
+
+@layer utilities {
+  /* Desktop Grid Configuration */
+  .grid-desktop {
+    @apply grid max-w-[1512px] mx-auto px-[96px];
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  /* Specific position helpers matching Figma */
+  .section-padding {
+    @apply px-[96px] py-[120px]; /* General padding matching Figma's 96px */
+  }
+}
