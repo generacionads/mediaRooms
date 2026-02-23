@@ -49,12 +49,14 @@ export default function Header() {
             {/* Menu Links */}
             <div className="flex flex-col gap-[64px] col-span-12 w-full lg:w-[1320px]">
               <div className="flex flex-col gap-[12px] w-full items-start">
-                <Enlaces href="#" variant="link_default">Inicio</Enlaces>
-                <Enlaces href="#" variant="link_default">Calculadora de ahorro</Enlaces>
+                <Enlaces href="/" variant="link_default">Inicio</Enlaces>
+                <Enlaces href="/calculadora" variant="link_default">Calculadora de ahorro</Enlaces>
               </div>
 
               <div className="flex w-fit">
-                <BtnPry theme="dark" />
+                <Link href="/calculadora" className="w-fit cursor-pointer">
+                  <BtnPry theme="dark" />
+                </Link>
               </div>
             </div>
 

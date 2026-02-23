@@ -28,7 +28,7 @@ export default function RootLayout({
           {`
             @font-face {
               font-family: 'Gebuk';
-              src: local('Gebuk Regular'), local('Gebuk-Regular');
+              src: url('/fonts/Gebuk-Regular.otf') format('opentype'), local('Gebuk Regular'), local('Gebuk-Regular');
               font-weight: 400;
               font-style: normal;
               font-display: swap;
