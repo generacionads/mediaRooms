@@ -17,11 +17,11 @@ export default function Enlaces({ className, variant = "link_default", children,
     return (
         <a
             href={href}
-            className={`block h-[90px] relative w-full lg:w-[1320px] transition-colors duration-300 ${className || ""}`}
+            className={`block relative w-full lg:w-[1320px] transition-colors duration-300 ${className || ""}`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <p className={`absolute font-['Gebuk'] inset-0 leading-[90px] not-italic text-[80px] whitespace-pre-wrap transition-colors duration-300 ${isLinkHover ? "text-[#083e45]" : "text-white"}`}>
+            <p className={`relative font-['Gebuk'] leading-[1.2] lg:leading-[90px] not-italic text-[40px] lg:text-[80px] transition-colors duration-300 ${isLinkHover ? "text-[#083e45]" : "text-white"}`}>
                 {children}
             </p>
         </a>

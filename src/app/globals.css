@@ -15,15 +15,16 @@
 }
 
 @layer utilities {
+
   /* Desktop Grid Configuration */
   .grid-desktop {
-    @apply grid max-w-[1512px] mx-auto px-[96px];
+    @apply grid max-w-[1512px] mx-auto px-6 lg:px-[96px];
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: 24px;
   }
 
   /* Specific position helpers matching Figma */
   .section-padding {
-    @apply px-[96px] py-[120px]; /* General padding matching Figma's 96px */
+    @apply px-6 lg:px-[96px] py-[60px] lg:py-[120px];
   }
 }

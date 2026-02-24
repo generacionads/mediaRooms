@@ -126,7 +126,7 @@ export default function BtnRounded({ className, variant = "telf-closed", interac
         <motion.div
             whileTap={{ scale: 0.93 }}
             ref={containerRef}
-            className={`flex flex-row items-center justify-center relative rounded-[99px] h-[72px] overflow-hidden px-[24px] cursor-pointer w-fit ${className || ""}`}
+            className={`flex flex-row items-center justify-center relative rounded-[99px] h-[48px] lg:h-[72px] overflow-hidden px-[16px] lg:px-[24px] cursor-pointer w-fit ${className || ""}`}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             style={{
@@ -134,14 +134,14 @@ export default function BtnRounded({ className, variant = "telf-closed", interac
                 gap: isName ? "10px" : "0px",
             }}
         >
-            <div className="relative shrink-0 w-[24px] h-[24px] flex items-center justify-center">
+            <div className="relative shrink-0 w-[16px] h-[16px] lg:w-[24px] lg:h-[24px] flex items-center justify-center">
                 <Image alt="icon" fill className="object-contain" src={getIconSrc()} />
             </div>
 
             {closedTextContent && (
                 <p
                     ref={closedTextRef}
-                    className="font-['Gebuk'] not-italic relative shrink-0 text-[32px] whitespace-nowrap overflow-hidden leading-[32px] h-[32px]"
+                    className="font-['Gebuk'] not-italic relative shrink-0 text-[20px] lg:text-[32px] whitespace-nowrap overflow-hidden leading-[20px] lg:leading-[32px] h-[20px] lg:h-[32px]"
                     style={{ color: closedTextColor, width: "auto", opacity: 1 }}
                 >
                     {closedTextContent}
@@ -150,7 +150,7 @@ export default function BtnRounded({ className, variant = "telf-closed", interac
 
             <p
                 ref={openTextRef}
-                className="font-['Gebuk'] not-italic relative shrink-0 text-[32px] whitespace-nowrap overflow-hidden leading-[32px] h-[32px]"
+                className="font-['Gebuk'] not-italic relative shrink-0 text-[20px] lg:text-[32px] whitespace-nowrap overflow-hidden leading-[20px] lg:leading-[32px] h-[20px] lg:h-[32px]"
                 style={{ color: openTextColor, width: 0, opacity: 0 }}
             >
                 {openTextContent}

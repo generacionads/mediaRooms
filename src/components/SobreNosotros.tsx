@@ -173,9 +173,9 @@ export default function SobreNosotros() {
                     {/* Shadow overlay matching Figma design layer */}
                     <div className="absolute inset-0 z-10 pointer-events-none rounded-[inherit] shadow-[inset_0px_4px_124px_40px_rgba(0,0,0,0.55)]" />
 
-                    {/* Main Team Background Image placeholder */}
+                    {/* Main Team Background Image */}
                     <img
-                        src="http://localhost:3845/assets/900e8c0e51777b67f5153bef682aed6d8ff1af83.png"
+                        src="/images/nosotros_mediaRooms.jpg"
                         alt="MediaRooms Team"
                         className="absolute inset-0 w-full h-full object-cover"
                     />

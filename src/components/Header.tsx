@@ -14,7 +14,7 @@ export default function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full z-50 flex items-start justify-between px-[96px] py-[26px] bg-[#48d7de] overflow-hidden ${!isMenuOpen ? "pointer-events-none" : ""
+        className={`fixed top-0 left-0 w-full z-50 flex items-start justify-between px-6 lg:px-[96px] py-[20px] lg:py-[26px] bg-[#48d7de] overflow-hidden ${!isMenuOpen ? "pointer-events-none" : ""
           }`}
         style={{
           height: isMenuOpen ? "100vh" : "127px",
@@ -22,10 +22,10 @@ export default function Header() {
         }}
       >
         <Link href="/" className="flex items-center gap-[2px] pt-[12px] pointer-events-auto cursor-pointer">
-          <span className="font-['Gebuk'] text-[47px] tracking-[-0.94px] text-white">
+          <span className="font-['Gebuk'] text-[32px] lg:text-[47px] tracking-[-0.94px] text-white">
             media
           </span>
-          <span className="font-['Gebuk'] text-[47px] tracking-[-0.47px] text-[#083e45]">
+          <span className="font-['Gebuk'] text-[32px] lg:text-[47px] tracking-[-0.47px] text-[#083e45]">
             Rooms
           </span>
         </Link>
@@ -38,16 +38,16 @@ export default function Header() {
         </div>
 
         <div
-          className="absolute top-[226px] left-0 w-full text-white pointer-events-auto"
+          className="absolute top-[160px] lg:top-[226px] left-0 w-full h-[calc(100vh-160px)] lg:h-auto text-white pointer-events-auto"
           style={{
             opacity: isMenuOpen ? 1 : 0,
             visibility: isMenuOpen ? "visible" : "hidden",
             transition: "opacity 0.4s ease-out, visibility 0.4s",
           }}
         >
-          <div className="grid-desktop relative">
+          <div className="grid-desktop relative h-full lg:h-auto">
             {/* Menu Links */}
-            <div className="flex flex-col gap-[64px] col-span-12 w-full lg:w-[1320px]">
+            <div className="flex flex-col gap-[32px] lg:gap-[64px] col-span-12 w-full lg:w-[1320px]">
               <div className="flex flex-col gap-[12px] w-full items-start">
                 <Enlaces href="/" variant="link_default">Inicio</Enlaces>
                 <Enlaces href="/calculadora" variant="link_default">Calculadora de ahorro</Enlaces>
@@ -61,7 +61,7 @@ export default function Header() {
             </div>
 
             {/* Contact Info Footer */}
-            <div className="absolute top-[694px] left-[96px] flex gap-12 font-sans text-[20px] text-[#083e45]">
+            <div className="absolute bottom-[40px] lg:bottom-auto lg:top-[694px] left-6 lg:left-[96px] flex flex-col lg:flex-row gap-2 lg:gap-12 font-sans text-[16px] lg:text-[20px] text-[#083e45]">
               <a href="tel:+34611191139">+34 611 19 11 39</a>
               <a href="mailto:hola@mediarooms.es">hola@mediarooms.es</a>
             </div>

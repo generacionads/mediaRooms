@@ -3,33 +3,56 @@
 import { useRef, useState, useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { AnimatePresence } from "framer-motion";
 import BtnPry from "@/components/ui/BtnPry";
+import ServiciosModal, { ServiceData } from "@/components/ui/ServiciosModal";
 
 // Register ScrollTrigger outside components
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-const SERVICIOS_DATA = [
+const SERVICIOS_DATA: ServiceData[] = [
     {
         id: "marketing",
         title: "Marketing Online",
         description: "Captar reservas directas a través de campañas segmentadas. Anuncios emocionales en Spotify y redes sociales que posicionan al hotel como una experiencia única.",
+        stats: [{
+            value: "+25%",
+            label: "Ingresos anuales",
+            desc: "Promedio de crecimiento anual en ingresos."
+        }],
+        image: "/images/marketingonline.jpg"
     },
     {
         id: "desarrollo",
         title: "Desarrollo Web",
         description: "Páginas súper rápidas, visuales y con el motor de reservas totalmente integrado. Una experiencia de usuario optimizada para la conversión.",
+        stats: [{
+            value: "+40%",
+            label: "Tasa de conversión",
+            desc: "Promedio de aumento en reservas desde la web."
+        }]
     },
     {
         id: "seo",
         title: "Posicionamiento Orgánico",
         description: "Aparece el primero en Google cuando los viajeros busquen hotel en tu ciudad. Estrategias SEO combinadas de largo recorrido.",
+        stats: [{
+            value: "Top 3",
+            label: "Google Rankings",
+            desc: "Posicionamiento promedio en búsquedas locales."
+        }]
     },
     {
         id: "analitica",
         title: "Analítica Web",
         description: "Datos precisos sobre el comportamiento de los clientes. Cada click de reserva se mide para escalar la inversión con mayor certeza.",
+        stats: [{
+            value: "95%",
+            label: "Precisión de datos",
+            desc: "Trazabilidad completa del embudo de ventas."
+        }]
     },
 ];
 
@@ -38,6 +61,19 @@ export default function Services() {
     const triggerRef = useRef<HTMLDivElement>(null);
     const scrollTrackRef = useRef<HTMLDivElement>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
+
+    // Modal state
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedService, setSelectedService] = useState<ServiceData | null>(null);
+
+    const openModal = (service: ServiceData) => {
+        setSelectedService(service);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
     useLayoutEffect(() => {
         // Wait for DOM to paint completely before attaching ScrollTrigger
@@ -109,16 +145,24 @@ export default function Services() {
                                                 {service.description}
                                             </p>
                                         </div>
-                                        <BtnPry theme="cyan" text="Ver info" />
+                                        <BtnPry
+                                            theme="cyan"
+                                            text="Ver info"
+                                            onClick={() => openModal(service)}
+                                        />
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Slide Image Placeholder */}
-                            <div className="w-full h-[300px] lg:h-[419px] shrink-0 bg-[#1a4a52] flex items-center justify-center border-t border-[#48d7de]/20 relative z-10">
-                                <span className="text-[#48d7de]/30 text-[18px] lg:text-[24px] font-sans tracking-widest uppercase font-bold text-center px-4">
-                                    {`[ IMAGEN ${service.title.toUpperCase()} ]`}
-                                </span>
+                            {/* Slide Image Placeholder or Actual Image */}
+                            <div className="w-full h-[300px] lg:h-[419px] shrink-0 bg-[#1a4a52] flex items-center justify-center border-t border-[#48d7de]/20 relative z-10 overflow-hidden">
+                                {service.image ? (
+                                    <img src={service.image} alt={service.title} className="w-full h-full object-cover" />
+                                ) : (
+                                    <span className="text-[#48d7de]/30 text-[18px] lg:text-[24px] font-sans tracking-widest uppercase font-bold text-center px-4">
+                                        {`[ IMAGEN ${service.title.toUpperCase()} ]`}
+                                    </span>
+                                )}
                             </div>
                         </div>
                     ))}
@@ -137,6 +181,17 @@ export default function Services() {
                 </div>
 
             </div>
+
+            {/* Modal Portal */}
+            <AnimatePresence>
+                {isModalOpen && (
+                    <ServiciosModal
+                        isOpen={isModalOpen}
+                        onClose={closeModal}
+                        service={selectedService}
+                    />
+                )}
+            </AnimatePresence>
         </section>
     );
 }

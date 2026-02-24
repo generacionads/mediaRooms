@@ -11,11 +11,12 @@ export type BtnPryProps = {
     className?: string;
     theme?: "cyan" | "dark";
     text?: string;
+    onClick?: () => void;
 };
 
 const PATH_ARROW = "M6 18V8H9V12.75L15.8 5.95L18 8.15L11.15 15H16V18H6Z";
 
-export default function BtnPry({ className, theme = "cyan", text = "Calcula tu Ahorro" }: BtnPryProps) {
+export default function BtnPry({ className, theme = "cyan", text = "Calcula tu Ahorro", onClick }: BtnPryProps) {
     const parentRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const textRef = useRef<HTMLParagraphElement>(null);
@@ -101,23 +102,24 @@ export default function BtnPry({ className, theme = "cyan", text = "Calcula tu A
             className={`relative flex items-center cursor-pointer ${className || ""}`}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            style={{ width: wrapperWidth !== "auto" ? wrapperWidth : "max-content", height: "73px" }}
+            onClick={onClick}
+            style={{ width: wrapperWidth !== "auto" ? wrapperWidth : "max-content", height: "100%" }}
         >
             <div
                 ref={containerRef}
-                className="flex items-center justify-center relative rounded-[99px] h-[73px] overflow-hidden px-[32px] py-[24px] gap-[12px]"
+                className="flex items-center justify-center relative rounded-[99px] h-[56px] lg:h-[73px] overflow-hidden px-[24px] lg:px-[32px] py-[16px] lg:py-[24px] gap-[8px] lg:gap-[12px]"
                 style={{ backgroundColor: defaultBg }}
             >
                 <p
                     ref={textRef}
-                    className="font-['Gebuk'] leading-[normal] not-italic relative shrink-0 text-[32px] whitespace-nowrap overflow-hidden"
+                    className="font-['Gebuk'] leading-[normal] not-italic relative shrink-0 text-[24px] lg:text-[32px] whitespace-nowrap overflow-hidden"
                     style={{ color: defaultFg }}
                 >
                     {text}
                 </p>
 
-                <div className="relative shrink-0 w-[24px] h-[24px] flex items-center justify-center">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <div className="relative shrink-0 w-[20px] h-[20px] lg:w-[24px] lg:h-[24px] flex items-center justify-center">
+                    <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d={PATH_ARROW} fill={defaultFg} />
                     </svg>
                 </div>
