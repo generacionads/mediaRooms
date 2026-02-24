@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import BtnMenu from "@/components/ui/BtnMenu";
 import BtnPry from "@/components/ui/BtnPry";
@@ -8,17 +8,30 @@ import Enlaces from "@/components/ui/Enlaces";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    // Check initial scroll position
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full z-50 flex items-start justify-between px-6 lg:px-[96px] py-[20px] lg:py-[26px] bg-[#48d7de] overflow-hidden ${!isMenuOpen ? "pointer-events-none" : ""
-          }`}
+        className={`fixed top-0 left-0 w-full z-50 flex items-start justify-between px-6 lg:px-[96px] bg-[#48d7de] overflow-hidden ${isScrolled && !isMenuOpen ? "py-[10px]" : "py-[20px] lg:py-[26px]"
+          } ${!isMenuOpen ? "pointer-events-none" : ""}`}
         style={{
-          height: isMenuOpen ? "100vh" : "127px",
-          transition: "height 0.8s cubic-bezier(0.76, 0, 0.24, 1)"
+          height: isMenuOpen ? "100vh" : (isScrolled ? "92px" : "127px"),
+          transition: "height 0.6s cubic-bezier(0.76, 0, 0.24, 1), padding 0.6s cubic-bezier(0.76, 0, 0.24, 1)"
         }}
       >
         <Link href="/" className="flex items-center gap-[2px] pt-[12px] pointer-events-auto cursor-pointer">

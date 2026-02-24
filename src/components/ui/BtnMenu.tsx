@@ -18,11 +18,13 @@ export type BtnMenuProps = {
 const PATH_MENU = "M3 18V16H21V18H3ZM3 13V11H21V13H3ZM3 8V6H21V8H3Z";
 const PATH_CLOSE = "M6.4 19L5 17.6L10.6 12L5 6.4L6.4 5L12 10.6L17.6 5L19 6.4L13.4 12L19 17.6L17.6 19L12 13.4L6.4 19Z";
 
-export default function BtnMenu({ className, variant = "btn_close", onClick, text = "Menú" }: BtnMenuProps) {
+export default function BtnMenu({ className, variant = "btn_close", onClick, text }: BtnMenuProps) {
     const isBtnOpen = variant === "btn_open";
     const containerRef = useRef<HTMLButtonElement>(null);
     const pathRef = useRef<SVGPathElement>(null);
     const textRef = useRef<HTMLParagraphElement>(null);
+
+    const buttonText = text ? text : "Menú";
 
     const tlRef = useRef<gsap.core.Timeline | null>(null);
     const isHoveredRef = useRef(false);
@@ -30,13 +32,7 @@ export default function BtnMenu({ className, variant = "btn_close", onClick, tex
     useGSAP(() => {
         // Paused timeline for expansion on hover or state change
         const tl = gsap.timeline({
-            paused: true,
-            onComplete: () => {
-                // When finishing the expansion, if the user already moved away, reverse it
-                if (!isHoveredRef.current) {
-                    tl.reverse();
-                }
-            }
+            paused: true
         });
 
         tl.to(containerRef.current, {
@@ -57,6 +53,11 @@ export default function BtnMenu({ className, variant = "btn_close", onClick, tex
         }
 
         tlRef.current = tl;
+
+        // If initialized as open, jump to the end
+        if (isBtnOpen) {
+            tl.progress(1);
+        }
     }, []);
 
     useGSAP(() => {
@@ -66,6 +67,16 @@ export default function BtnMenu({ className, variant = "btn_close", onClick, tex
             ease: "power3.inOut",
             duration: 0.5,
         });
+
+        // Ensure the expansion timeline matches the state
+        if (tlRef.current) {
+            if (isBtnOpen) {
+                tlRef.current.play();
+            } else if (!isHoveredRef.current) {
+                // Wait a tiny bit to check hover state to avoid flicker? No, just reverse.
+                tlRef.current.reverse();
+            }
+        }
     }, [isBtnOpen]);
 
     const handleMouseEnter = () => {
@@ -77,17 +88,16 @@ export default function BtnMenu({ className, variant = "btn_close", onClick, tex
 
     const handleMouseLeave = () => {
         isHoveredRef.current = false;
-        if (tlRef.current) {
-            if (tlRef.current.progress() === 1) {
-                tlRef.current.reverse();
-            }
+        if (tlRef.current && !isBtnOpen) {
+            tlRef.current.reverse();
         }
     };
 
     const handleBtnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        isHoveredRef.current = false;
-        if (tlRef.current) {
-            tlRef.current.reverse();
+        // On touch devices, iOS keeps hover states active until you tap elsewhere.
+        // We force reset it here on click so the button visually closes.
+        if (typeof window !== "undefined" && window.matchMedia("(hover: none)").matches) {
+            isHoveredRef.current = false;
         }
         onClick?.(e);
     };
@@ -107,7 +117,7 @@ export default function BtnMenu({ className, variant = "btn_close", onClick, tex
                 className="font-['Gebuk'] not-italic relative shrink-0 text-[#083e45] text-[28px] whitespace-nowrap overflow-hidden leading-[32px] h-[32px]"
                 style={{ width: 0, opacity: 0 }}
             >
-                {text}
+                {buttonText}
             </p>
 
             <div className="relative shrink-0 w-[24px] h-[24px] flex items-center justify-center">

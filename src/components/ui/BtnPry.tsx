@@ -99,7 +99,7 @@ export default function BtnPry({ className, theme = "cyan", text = "Calcula tu A
         <motion.div
             whileTap={{ scale: 0.93 }}
             ref={parentRef}
-            className={`relative flex items-center cursor-pointer ${className || ""}`}
+            className={`relative flex items-center justify-center cursor-pointer ${className || ""}`}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onClick={onClick}
