@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import clsx from "clsx";
-import Image from "next/image";
 
 interface BackgroundCirclesProps {
     className?: string;
@@ -87,15 +86,15 @@ export function BackgroundCircles({
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1, ease: "easeOut" }}
             >
-                {/* Logo inside the circles */}
-                {/* Figma Isologo */}
-                <div className="relative w-[180px] h-[180px] md:w-[240px] md:h-[240px]">
-                    <Image
-                        src="/assets/Logo-isologo.svg"
-                        alt="MediaRooms Logo"
-                        fill
-                        className="object-contain drop-shadow-[0_0_16px_rgba(72,215,222,0.4)]"
-                        priority
+                {/* Video inside the circles */}
+                <div className="relative w-[360px] h-[360px] md:w-[480px] md:h-[480px] rounded-full overflow-hidden drop-shadow-[0_0_16px_rgba(72,215,222,0.4)]">
+                    <video
+                        src="/herov2-mediarooms.mp4"
+                        className="object-cover w-full h-full"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
                     />
                 </div>
             </motion.div>
