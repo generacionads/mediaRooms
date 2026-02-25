@@ -88,8 +88,11 @@ function TeamMemberTag({ member }: { member: typeof TEAM_MEMBERS[0] }) {
 
         // Show expanded role text
         if (openTextRef.current) {
+            // Dynamically measure exactly how much width this specific role text needs.
+            // Add 8px for the padding we are animating in, plus 2px buffer for sub-pixel rendering.
+            const targetWidth = openTextRef.current.scrollWidth + 10;
             tl.to(openTextRef.current, {
-                maxWidth: 200, // Safe max width to allow expanding without auto jumps
+                maxWidth: targetWidth,
                 opacity: 1,
                 paddingLeft: 8,
                 ease: "power4.inOut",
@@ -130,19 +133,19 @@ function TeamMemberTag({ member }: { member: typeof TEAM_MEMBERS[0] }) {
                 </svg>
 
                 <span
-                    ref={closedTextRef}
-                    className="font-['Gebuk'] text-[16px] text-[#48d7de] leading-[16px] overflow-hidden pl-[8px]"
-                    style={{ maxWidth: 200, opacity: 1, willChange: "max-width, opacity, padding" }}
-                >
-                    {member.name}
-                </span>
-
-                <span
                     ref={openTextRef}
                     className="font-['Gebuk'] text-[16px] text-[#083e45] leading-[16px] overflow-hidden"
                     style={{ maxWidth: 0, opacity: 0, paddingLeft: 0, willChange: "max-width, opacity, padding" }}
                 >
                     {member.role}
+                </span>
+
+                <span
+                    ref={closedTextRef}
+                    className="font-['Gebuk'] text-[16px] text-[#48d7de] leading-[16px] overflow-hidden pl-[8px]"
+                    style={{ maxWidth: "100%", opacity: 1, willChange: "max-width, opacity, padding" }}
+                >
+                    {member.name}
                 </span>
             </div>
         </div>

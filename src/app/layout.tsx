@@ -10,6 +10,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 import FloatingContact from "@/components/ui/FloatingContact";
+import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 
 export const metadata: Metadata = {
   title: "MediaRooms | Reservas Directas",
@@ -37,9 +38,11 @@ export default function RootLayout({
         </style>
       </head>
       <body className="antialiased">
-        <Header />
-        <FloatingContact />
-        {children}
+        <SmoothScrollProvider>
+          <Header />
+          <FloatingContact />
+          {children}
+        </SmoothScrollProvider>
       </body>
     </html>
   );

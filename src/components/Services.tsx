@@ -81,36 +81,55 @@ export default function Services() {
             if (!triggerRef.current || !scrollTrackRef.current) return;
 
             // Get total scrollable distance based on track width
+            // Use the scrollWidth plus an arbitrary buffer for the block effect
+            // We use 'power2.inOut' ease: starts slow (the block feeling), accelerates, decelerates.
             const scrollWidth = scrollTrackRef.current.scrollWidth - window.innerWidth;
 
-            // Animate horizontally
-            gsap.to(scrollTrackRef.current, {
-                x: -scrollWidth,
-                ease: "none",
+            // To create the "block" effect, we increase the total scroll distance (end pointer)
+            // but we apply an ease that starts flat. Or we can just animate the x value with 
+            // a custom timeline where the first part does nothing.
+
+            // A simpler approach for the block is to use a timeline with an empty tween at the start
+            // and label-based snapping to ensure perfect alignment without bouncing.
+            const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: triggerRef.current,
                     pin: true,
-                    scrub: 1,
+                    pinType: "transform", // This often smooths out the vertical pin catching
+                    scrub: 1, // Reduced from 2 since Lenis provides the base inertia
                     end: () => `+=${scrollWidth}`,
                     invalidateOnRefresh: true,
                     anticipatePin: 1,
                     snap: {
-                        snapTo: 1 / (SERVICIOS_DATA.length - 1),
-                        duration: { min: 0.2, max: 0.5 },
-                        delay: 0,
+                        snapTo: "labelsDirectional",
+                        duration: { min: 0.2, max: 0.6 },
+                        delay: 0.05,
                         ease: "power1.inOut"
                     },
                     onUpdate: (self) => {
-                        const progress = self.progress;
-                        // Snap logic makes progress jump exactly to 0, 0.33, 0.66, 1
-                        const index = Math.round(progress * (SERVICIOS_DATA.length - 1));
+                        // Keep the UI buttons updated based on raw linear progress
+                        const index = Math.round(self.progress * (SERVICIOS_DATA.length - 1));
                         setCurrentIndex((prev) => {
-                            if (prev !== index) return index;
+                            if (prev !== index) return Math.min(index, SERVICIOS_DATA.length - 1);
                             return prev;
                         });
                     }
                 }
             });
+
+            // Start strictly at the beginning of the lateral scroll
+            tl.addLabel("slide0");
+
+            // Build the segments label by label for precision tracking
+            const numSlides = SERVICIOS_DATA.length;
+            for (let i = 1; i < numSlides; i++) {
+                tl.to(scrollTrackRef.current, {
+                    x: -(scrollWidth / (numSlides - 1)) * i,
+                    ease: "none", // Linear mapping between snap points
+                    duration: 1
+                });
+                tl.addLabel(`slide${i}`);
+            }
         }, sectionRef);
 
         return () => ctx.revert(); // Proper React cleanup for GSAP
@@ -166,7 +185,7 @@ export default function Services() {
                             </div>
 
                             {/* Slide Image Placeholder or Actual Image */}
-                            <div className="w-full h-[300px] lg:h-[419px] shrink-0 bg-[#1a4a52] flex items-center justify-center border-t border-[#48d7de]/20 relative z-10 overflow-hidden">
+                            <div className="w-full h-[200px] lg:h-[300px] shrink-0 bg-[#1a4a52] flex items-center justify-center border-t border-[#48d7de]/20 relative z-10 overflow-hidden">
                                 {service.image ? (
                                     <img src={service.image} alt={service.title} className="w-full h-full object-cover" />
                                 ) : (

@@ -82,23 +82,29 @@ export default function Exito() {
             if (!triggerRef.current || !scrollTrackRef.current) return;
 
             // Get total scrollable distance based on track width vs viewport
+            // Use the scrollWidth plus an arbitrary buffer for the block effect
             const scrollWidth = scrollTrackRef.current.scrollWidth - window.innerWidth;
 
-            // Animate horizontally
-            gsap.to(scrollTrackRef.current, {
-                x: -scrollWidth,
-                ease: "none",
+            // A timeline approach to create the initial block and snap perfectly:
+            const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: triggerRef.current,
                     pin: true,
-                    scrub: 1,
+                    pinType: "transform", // This often smooths out the vertical pin catching
+                    scrub: 1, // Reduced from 2 since Lenis provides the base inertia
                     end: () => `+=${scrollWidth}`,
                     invalidateOnRefresh: true,
                     anticipatePin: 1,
+                    snap: {
+                        snapTo: "labelsDirectional",
+                        duration: { min: 0.2, max: 0.6 },
+                        delay: 0.05,
+                        ease: "power1.inOut"
+                    },
                     onUpdate: (self) => {
-                        const progress = self.progress;
+                        // Keep the UI buttons updated based on raw linear progress
                         const index = Math.min(
-                            Math.floor(progress * CASOS_DATA.length),
+                            Math.round(self.progress * (CASOS_DATA.length - 1)),
                             CASOS_DATA.length - 1
                         );
                         setCurrentIndex((prev: number) => {
@@ -108,6 +114,19 @@ export default function Exito() {
                     }
                 }
             });
+
+            // Start strictly at the beginning of the lateral scroll
+            tl.addLabel("slide0");
+
+            const numSlides = CASOS_DATA.length;
+            for (let i = 1; i < numSlides; i++) {
+                tl.to(scrollTrackRef.current, {
+                    x: -(scrollWidth / (numSlides - 1)) * i,
+                    ease: "none",
+                    duration: 1
+                });
+                tl.addLabel(`slide${i}`);
+            }
         }, sectionRef);
 
         return () => ctx.revert();
@@ -127,11 +146,11 @@ export default function Exito() {
         <section ref={sectionRef} id="exito" className="relative w-full bg-[#083e45] text-white">
 
             {/* The Trigger Element that gets Pinned */}
-            <div ref={triggerRef} className="h-screen w-full overflow-hidden flex flex-col relative pt-[100px] lg:pt-[150px]">
+            <div ref={triggerRef} className="h-screen w-full overflow-hidden flex flex-col relative pt-[40px] lg:pt-[72px]">
 
-                {/* Fixed Top Left Header Content (Fades in normally via scroll or starts visible) */}
-                <div className="absolute top-[100px] lg:top-[192px] left-6 lg:left-[84px] z-30">
-                    <div className="border border-[#48d7de] rounded-[99px] px-6 lg:px-[32px] py-3 lg:py-[24px] inline-block mb-12">
+                {/* Fixed Top Left Header Content (Now in normal flow so it doesn't overlap) */}
+                <div className="w-full px-6 lg:px-[84px] z-30 shrink-0">
+                    <div className="border border-[#48d7de] rounded-[99px] px-6 lg:px-[32px] py-3 lg:py-[24px] inline-block mb-8 lg:mb-12">
                         <span className="font-['Gebuk'] text-[24px] lg:text-[32px] leading-none text-white tracking-wide">
                             Hoteles que confiaron en nosotros
                         </span>
@@ -139,12 +158,12 @@ export default function Exito() {
                 </div>
 
                 {/* The Horizontal Track */}
-                <div ref={scrollTrackRef} className="flex h-full w-[300vw] will-change-transform mt-[100px] lg:mt-0">
+                <div ref={scrollTrackRef} className="flex flex-1 w-[300vw] will-change-transform">
                     {CASOS_DATA.map((caso) => (
-                        <div key={caso.id} className="w-screen h-full flex-shrink-0 relative flex flex-col justify-start gap-[40px] lg:gap-[64px] pt-[180px] lg:pt-[160px]">
+                        <div key={caso.id} className="w-screen h-full flex-shrink-0 relative flex flex-col justify-end">
 
                             {/* Top Text Block */}
-                            <div className="flex flex-col gap-[32px] w-full shrink-0 z-20 px-6 lg:px-[96px] max-w-[1200px]">
+                            <div className="flex flex-col gap-[32px] w-full shrink-0 z-20 px-6 lg:px-[96px] max-w-[1200px] pb-[40px] lg:pb-[72px]">
                                 <div className="flex flex-col gap-[12px]">
                                     <h3 className="font-sans text-[48px] lg:text-[60px] text-[#48d7de] leading-[1.1]">
                                         {caso.title}
@@ -168,7 +187,7 @@ export default function Exito() {
                             </div>
 
                             {/* Bottom Full Width Image Layout Block */}
-                            <div className="w-full flex-1 min-h-[300px] lg:min-h-[400px] shrink-0 relative bg-[#1a4a52] overflow-hidden mt-auto">
+                            <div className="w-full h-[200px] lg:h-[300px] shrink-0 relative bg-[#1a4a52] overflow-hidden mt-auto">
                                 <img src={caso.image} alt={caso.title} className="w-full h-full object-cover" />
                             </div>
 

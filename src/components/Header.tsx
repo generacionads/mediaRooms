@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import BtnMenu from "@/components/ui/BtnMenu";
 import BtnPry from "@/components/ui/BtnPry";
 import Enlaces from "@/components/ui/Enlaces";
@@ -85,27 +86,56 @@ export default function Header() {
             transition: "opacity 0.4s ease-out, visibility 0.4s",
           }}
         >
-          <div className="grid-desktop relative h-full lg:h-auto">
-            {/* Menu Links */}
-            <div className="flex flex-col gap-[32px] lg:gap-[64px] col-span-12 w-full lg:w-[1320px]">
-              <div className="flex flex-col gap-[12px] w-full items-start">
-                <Enlaces href="/" variant="link_default">Inicio</Enlaces>
-                <Enlaces href="/calculadora" variant="link_default">Calculadora de ahorro</Enlaces>
-              </div>
+          <AnimatePresence>
+            {isMenuOpen && (
+              <motion.div
+                className="grid-desktop relative h-full lg:h-auto"
+                initial="hidden"
+                animate="show"
+                exit="hidden"
+                variants={{
+                  hidden: { opacity: 0 },
+                  show: {
+                    opacity: 1,
+                    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+                  },
+                }}
+              >
+                {/* Menu Links */}
+                <div className="flex flex-col gap-[32px] lg:gap-[64px] col-span-12 w-full lg:w-[1320px]">
+                  <div className="flex flex-col gap-[12px] w-full items-start">
+                    <Enlaces href="/" variant="link_default">Inicio</Enlaces>
+                    <Enlaces href="/calculadora" variant="link_default">Calculadora de ahorro</Enlaces>
+                  </div>
 
-              <div className="flex w-fit">
-                <Link href="/calculadora" className="w-fit cursor-pointer">
-                  <BtnPry theme="dark" />
-                </Link>
-              </div>
-            </div>
+                  <div className="flex w-fit">
+                    <Link href="/calculadora" className="w-fit cursor-pointer">
+                      <motion.div
+                        variants={{
+                          hidden: { opacity: 0, y: 20 },
+                          show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } },
+                        }}
+                      >
+                        <BtnPry theme="dark" />
+                      </motion.div>
+                    </Link>
+                  </div>
+                </div>
 
-            {/* Contact Info Footer */}
-            <div className="absolute bottom-[40px] lg:bottom-auto lg:top-[694px] left-6 lg:left-[96px] flex flex-col lg:flex-row gap-2 lg:gap-12 font-sans text-[16px] lg:text-[20px] text-[#083e45]">
-              <a href="tel:+34611191139">+34 611 19 11 39</a>
-              <a href="mailto:hola@mediarooms.es">hola@mediarooms.es</a>
-            </div>
-          </div>
+                {/* Contact Info Footer */}
+                <motion.div
+                  className="absolute bottom-[40px] lg:bottom-auto lg:top-[694px] left-6 lg:left-[96px] flex flex-col lg:flex-row gap-2 lg:gap-12 font-sans text-[16px] lg:text-[20px] text-[#083e45]"
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } },
+                  }}
+                >
+                  <a href="tel:+34611191139">+34 611 19 11 39</a>
+                  <a href="mailto:hola@mediarooms.es">hola@mediarooms.es</a>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </header>
     </>
