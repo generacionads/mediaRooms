@@ -22,6 +22,18 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMenuOpen]);
+
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
@@ -34,7 +46,15 @@ export default function Header() {
           transition: "height 0.6s cubic-bezier(0.76, 0, 0.24, 1), padding 0.6s cubic-bezier(0.76, 0, 0.24, 1)"
         }}
       >
-        <Link href="/" className="flex items-center gap-[2px] pt-[12px] pointer-events-auto cursor-pointer">
+        <Link
+          href="/"
+          className={`flex items-center gap-[2px] pt-[12px] pointer-events-auto cursor-pointer`}
+          style={{
+            transform: isScrolled ? "scale(0.75)" : "scale(1)",
+            transformOrigin: "left center",
+            transition: "transform 0.6s cubic-bezier(0.76, 0, 0.24, 1)"
+          }}
+        >
           <span className="font-['Gebuk'] text-[32px] lg:text-[47px] tracking-[-0.94px] text-white">
             media
           </span>
@@ -43,7 +63,14 @@ export default function Header() {
           </span>
         </Link>
 
-        <div className="pointer-events-auto z-10 w-fit h-fit">
+        <div
+          className="pointer-events-auto z-10 w-fit h-fit"
+          style={{
+            transform: isScrolled ? "scale(0.75)" : "scale(1)",
+            transformOrigin: "right center",
+            transition: "transform 0.6s cubic-bezier(0.76, 0, 0.24, 1)"
+          }}
+        >
           <BtnMenu
             variant={isMenuOpen ? "btn_open" : "btn_close"}
             onClick={toggleMenu}

@@ -11,12 +11,13 @@ export type BtnPryProps = {
     className?: string;
     theme?: "cyan" | "dark";
     text?: string;
+    action?: "collapse" | "expand";
     onClick?: () => void;
 };
 
 const PATH_ARROW = "M6 18V8H9V12.75L15.8 5.95L18 8.15L11.15 15H16V18H6Z";
 
-export default function BtnPry({ className, theme = "cyan", text = "Calcula tu Ahorro", onClick }: BtnPryProps) {
+export default function BtnPry({ className, theme = "cyan", text = "Calcula tu Ahorro", action = "collapse", onClick }: BtnPryProps) {
     const parentRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const textRef = useRef<HTMLParagraphElement>(null);
@@ -37,34 +38,57 @@ export default function BtnPry({ className, theme = "cyan", text = "Calcula tu A
         const tl = gsap.timeline({
             paused: true,
             onComplete: () => {
-                // When finishing the collapse, if the user already moved away, reverse it
+                // When finishing the collapse/expand, if the user already moved away, reverse it
                 if (!isHoveredRef.current) {
                     tl.reverse();
                 }
             }
         });
 
-        // Easing for the container
-        tl.to(containerRef.current, {
-            paddingLeft: 24,
-            paddingRight: 24,
-            gap: 0,
-            ease: "power3.inOut",
-            duration: 0.5,
-        }, 0);
-
-        // Easing for the text to disappear
-        if (textRef.current) {
-            tl.to(textRef.current, {
-                opacity: 0,
-                width: 0,
+        if (action === "collapse") {
+            // Easing for the container to collapse
+            tl.to(containerRef.current, {
+                paddingLeft: 24,
+                paddingRight: 24,
+                gap: 0,
                 ease: "power3.inOut",
-                duration: 0.4,
+                duration: 0.5,
             }, 0);
+
+            // Easing for the text to disappear
+            if (textRef.current) {
+                tl.to(textRef.current, {
+                    opacity: 0,
+                    width: 0,
+                    ease: "power3.inOut",
+                    duration: 0.4,
+                }, 0);
+            }
+        } else if (action === "expand") {
+            // Revert logic: Start collapsed, animate to natural flex dimensions
+            const isDesktop = typeof window !== "undefined" && window.innerWidth >= 1024;
+            const circlePad = isDesktop ? 24.5 : 18;
+
+            tl.from(containerRef.current, {
+                paddingLeft: circlePad,
+                paddingRight: circlePad,
+                gap: 0,
+                ease: "power3.inOut",
+                duration: 0.5,
+            }, 0);
+
+            if (textRef.current) {
+                tl.from(textRef.current, {
+                    opacity: 0,
+                    width: 0,
+                    ease: "power3.inOut",
+                    duration: 0.4,
+                }, 0);
+            }
         }
 
         tlRef.current = tl;
-    }, []);
+    }, [action]);
 
     const handleMouseEnter = () => {
         isHoveredRef.current = true;
@@ -90,10 +114,11 @@ export default function BtnPry({ className, theme = "cyan", text = "Calcula tu A
 
     useEffect(() => {
         // On mount, measure the natural width and lock it so the wrapper doesn't shrink
-        if (parentRef.current) {
+        // We only do this for the collapse variant so the click area remains stable
+        if (parentRef.current && action === "collapse") {
             setWrapperWidth(parentRef.current.offsetWidth);
         }
-    }, [text]);
+    }, [text, action]);
 
     return (
         <motion.div

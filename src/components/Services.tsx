@@ -94,12 +94,16 @@ export default function Services() {
                     end: () => `+=${scrollWidth}`,
                     invalidateOnRefresh: true,
                     anticipatePin: 1,
+                    snap: {
+                        snapTo: 1 / (SERVICIOS_DATA.length - 1),
+                        duration: { min: 0.2, max: 0.5 },
+                        delay: 0,
+                        ease: "power1.inOut"
+                    },
                     onUpdate: (self) => {
                         const progress = self.progress;
-                        const index = Math.min(
-                            Math.floor(progress * SERVICIOS_DATA.length),
-                            SERVICIOS_DATA.length - 1
-                        );
+                        // Snap logic makes progress jump exactly to 0, 0.33, 0.66, 1
+                        const index = Math.round(progress * (SERVICIOS_DATA.length - 1));
                         setCurrentIndex((prev) => {
                             if (prev !== index) return index;
                             return prev;
@@ -116,10 +120,17 @@ export default function Services() {
         const nextIndex = Math.min(currentIndex + 1, SERVICIOS_DATA.length - 1);
         if (nextIndex === currentIndex) return;
 
-        window.scrollBy({
-            top: window.innerHeight,
-            behavior: "smooth"
-        });
+        if (scrollTrackRef.current) {
+            // Calculate the exact pixel distance to scroll to hit the next snap point.
+            // Since the entire scroll distance is mapped to scrollWidth, one slide = scrollWidth / 3.
+            const scrollWidth = scrollTrackRef.current.scrollWidth - window.innerWidth;
+            const slideDistance = scrollWidth / (SERVICIOS_DATA.length - 1);
+
+            window.scrollBy({
+                top: slideDistance,
+                behavior: "smooth"
+            });
+        }
     };
 
     return (

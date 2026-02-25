@@ -168,7 +168,7 @@ export default function SobreNosotros() {
                 </div>
 
                 {/* Team Image Interactive Container */}
-                <div className="col-span-12 lg:col-span-10 lg:col-start-2 relative w-full aspect-[1043/517] min-h-[400px] rounded-[40px] lg:rounded-[99px] overflow-hidden ml-auto mr-auto">
+                <div className="col-span-12 lg:col-span-10 lg:col-start-3 relative w-full aspect-[1043/517] min-h-[400px] rounded-[40px] lg:rounded-[99px] overflow-hidden ml-auto mr-auto">
 
                     {/* Shadow overlay matching Figma design layer */}
                     <div className="absolute inset-0 z-10 pointer-events-none rounded-[inherit] shadow-[inset_0px_4px_124px_40px_rgba(0,0,0,0.55)]" />

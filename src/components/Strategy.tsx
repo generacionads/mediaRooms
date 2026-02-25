@@ -1,4 +1,6 @@
-import BtnCircle from "@/components/ui/BtnCircle";
+"use client";
+
+import BtnPry from "@/components/ui/BtnPry";
 
 const SERVICES = [
     {
@@ -52,8 +54,8 @@ export default function Strategy() {
                 {/* Services Grid (Shifted Right) */}
                 <div className="col-span-12 lg:col-span-10 lg:col-start-3 w-full flex flex-col lg:flex-row gap-[40px] lg:gap-[64px] justify-between">
                     {SERVICES.map((service) => (
-                        <div key={service.id} className="flex flex-col h-auto min-h-[267px] justify-between items-start w-full lg:w-[213px]">
-                            <div className="flex flex-col gap-[16px] items-start w-full mb-[32px]">
+                        <div key={service.id} className="flex flex-col h-auto min-h-[160px] lg:min-h-[267px] justify-between items-start w-full lg:w-[213px]">
+                            <div className="flex flex-col gap-[16px] items-start w-full mb-[24px] lg:mb-[32px]">
                                 <h3 className="font-sans text-[48px] lg:text-[60px] leading-[1.1] lg:leading-[70px] text-[#48d7de]">
                                     {service.title}
                                 </h3>
@@ -62,7 +64,7 @@ export default function Strategy() {
                                 </p>
                             </div>
 
-                            <BtnCircle className="mt-auto" />
+                            <BtnPry className="mt-auto" action="expand" text="saber más" />
                         </div>
                     ))}
                 </div>
