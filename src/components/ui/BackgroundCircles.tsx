@@ -87,10 +87,10 @@ export function BackgroundCircles({
                 transition={{ duration: 1, ease: "easeOut" }}
             >
                 {/* Video inside the circles */}
-                <div className="relative w-[360px] h-[360px] md:w-[480px] md:h-[480px] rounded-full overflow-hidden drop-shadow-[0_0_16px_rgba(72,215,222,0.4)]">
+                <div className="relative w-[480px] h-[480px] md:w-[480px] md:h-[480px] rounded-full overflow-hidden drop-shadow-[0_0_16px_rgba(72,215,222,0.4)]">
                     <video
                         src="/herov2-mediarooms.mp4"
-                        className="object-cover w-full h-full"
+                        className="object-cover w-full h-full scale-[1.1] md:scale-100"
                         autoPlay
                         loop
                         muted

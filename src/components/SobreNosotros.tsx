@@ -4,6 +4,8 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
+import BtnPry from "@/components/ui/BtnPry";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(useGSAP);
@@ -12,40 +14,40 @@ if (typeof window !== "undefined") {
 const TEAM_MEMBERS = [
     {
         id: "miembro1",
-        name: "Isa",
-        role: "Desarrolladora Web",
-        position: { top: "45%", left: "28%" } // Left girl
+        name: "Patri",
+        role: "Especialista en Publi",
+        position: { top: "45%", left: "23%" } // Left girl
     },
     {
         id: "miembro2",
-        name: "Isa",
+        name: "Javi",
         role: "Especialista SEO",
-        position: { top: "60%", left: "38%" } // Middle-left sitting guy
+        position: { top: "60%", left: "33%" } // Middle-left sitting guy
     },
     {
         id: "miembro3",
-        name: "Isa",
-        role: "Project Manager",
+        name: "Mario",
+        role: "Hace cosas",
         position: { top: "38%", left: "45%" } // Middle standing guy
     },
     {
         id: "miembro4",
         name: "Isa",
-        role: "Diseñadora UX",
+        role: "Desarrolladora Web",
         position: { top: "54%", left: "62%" } // Right sitting girl
     },
     {
         id: "miembro5",
-        name: "Isa",
-        role: "Marketing Specialist",
+        name: "Antonio",
+        role: "Especialist en Marketing",
         position: { top: "56%", left: "71.5%" } // Far-right sitting guy
     }
 ];
 
 function TeamMemberTag({ member }: { member: typeof TEAM_MEMBERS[0] }) {
     const containerRef = useRef<HTMLDivElement>(null);
-    const closedTextRef = useRef<HTMLSpanElement>(null);
-    const openTextRef = useRef<HTMLSpanElement>(null);
+    const closedTextRef = useRef<HTMLDivElement>(null);
+    const openTextRef = useRef<HTMLDivElement>(null);
     const iconRef = useRef<SVGPathElement>(null);
 
     const tlRef = useRef<gsap.core.Timeline | null>(null);
@@ -78,9 +80,10 @@ function TeamMemberTag({ member }: { member: typeof TEAM_MEMBERS[0] }) {
         // Hide inner static name text
         if (closedTextRef.current) {
             tl.to(closedTextRef.current, {
-                maxWidth: 0,
+                width: 0,
                 opacity: 0,
                 paddingLeft: 0,
+                paddingRight: 0,
                 ease: "power4.inOut",
                 duration: 0.55,
             }, 0);
@@ -88,13 +91,20 @@ function TeamMemberTag({ member }: { member: typeof TEAM_MEMBERS[0] }) {
 
         // Show expanded role text
         if (openTextRef.current) {
-            // Dynamically measure exactly how much width this specific role text needs.
-            // Add 8px for the padding we are animating in, plus 2px buffer for sub-pixel rendering.
-            const targetWidth = openTextRef.current.scrollWidth + 10;
             tl.to(openTextRef.current, {
-                maxWidth: targetWidth,
+                width: () => {
+                    const el = openTextRef.current!;
+                    const prevW = el.style.width;
+                    el.style.width = "max-content"; // Force natural text width
+                    const textWidth = el.offsetWidth; // Measures text because padding is 0 here
+                    el.style.width = prevW;
+                    // Adding 24px to total width because box-sizing: border-box demands 
+                    // extra width for the 12px left and 12px right padding we are adding.
+                    return textWidth + 24;
+                },
                 opacity: 1,
-                paddingLeft: 8,
+                paddingLeft: 12,
+                paddingRight: 12, // Symmetrical padding identical to the closed state
                 ease: "power4.inOut",
                 duration: 0.55,
             }, 0);
@@ -105,7 +115,11 @@ function TeamMemberTag({ member }: { member: typeof TEAM_MEMBERS[0] }) {
 
     const handleMouseEnter = () => {
         isHoveredRef.current = true;
-        if (tlRef.current) tlRef.current.play();
+        if (tlRef.current) {
+            // invalidate() ensures GSAP recalculates width on the fly, avoiding dead space if fonts load late
+            tlRef.current.invalidate();
+            tlRef.current.play();
+        }
     };
 
     const handleMouseLeave = () => {
@@ -132,21 +146,21 @@ function TeamMemberTag({ member }: { member: typeof TEAM_MEMBERS[0] }) {
                     <path ref={iconRef} d="M2.5 9.5L9.5 2.5M9.5 2.5H3.5M9.5 2.5V8.5" stroke="#48d7de" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
 
-                <span
+                <div
                     ref={openTextRef}
                     className="font-['Gebuk'] text-[16px] text-[#083e45] leading-[16px] overflow-hidden"
-                    style={{ maxWidth: 0, opacity: 0, paddingLeft: 0, willChange: "max-width, opacity, padding" }}
+                    style={{ width: 0, opacity: 0, paddingLeft: 0, paddingRight: 0, whiteSpace: "nowrap", willChange: "width, opacity, padding" }}
                 >
                     {member.role}
-                </span>
+                </div>
 
-                <span
+                <div
                     ref={closedTextRef}
-                    className="font-['Gebuk'] text-[16px] text-[#48d7de] leading-[16px] overflow-hidden pl-[8px]"
-                    style={{ maxWidth: "100%", opacity: 1, willChange: "max-width, opacity, padding" }}
+                    className="font-['Gebuk'] text-[16px] text-[#48d7de] leading-[16px] overflow-hidden"
+                    style={{ opacity: 1, paddingLeft: 12, paddingRight: 12, whiteSpace: "nowrap", willChange: "width, opacity, padding" }}
                 >
                     {member.name}
-                </span>
+                </div>
             </div>
         </div>
     );
@@ -166,7 +180,7 @@ export default function SobreNosotros() {
                     </div>
 
                     <h2 className="font-sans text-[48px] lg:text-[60px] text-[#48d7de] leading-[1.1] max-w-[1320px] text-center lg:text-left w-full">
-                        Queremos ayudarte
+                        Soluciones digitales de marketing y desarrollo para hoteles
                     </h2>
                 </div>
 
@@ -189,6 +203,13 @@ export default function SobreNosotros() {
                             <TeamMemberTag key={member.id} member={member} />
                         ))}
                     </div>
+                </div>
+
+                {/* CTA Button placed directly below the image container */}
+                <div className="col-span-12 lg:col-span-10 flex justify-center lg:justify-end lg:col-start-3 mt-[40px] lg:mt-[60px]">
+                    <Link href="/calculadora" className="w-fit cursor-pointer">
+                        <BtnPry theme="cyan" text="Infórmate gratis" />
+                    </Link>
                 </div>
 
             </div>

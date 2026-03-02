@@ -85,47 +85,60 @@ export default function Exito() {
             // Use the scrollWidth plus an arbitrary buffer for the block effect
             const scrollWidth = scrollTrackRef.current.scrollWidth - window.innerWidth;
 
-            // A timeline approach to create the initial block and snap perfectly:
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: triggerRef.current,
-                    pin: true,
-                    pinType: "transform", // This often smooths out the vertical pin catching
-                    scrub: 1, // Reduced from 2 since Lenis provides the base inertia
-                    end: () => `+=${scrollWidth}`,
-                    invalidateOnRefresh: true,
-                    anticipatePin: 1,
-                    snap: {
-                        snapTo: "labelsDirectional",
-                        duration: { min: 0.2, max: 0.6 },
-                        delay: 0.05,
-                        ease: "power1.inOut"
-                    },
-                    onUpdate: (self) => {
-                        // Keep the UI buttons updated based on raw linear progress
-                        const index = Math.min(
-                            Math.round(self.progress * (CASOS_DATA.length - 1)),
-                            CASOS_DATA.length - 1
-                        );
-                        setCurrentIndex((prev: number) => {
-                            if (prev !== index) return index;
-                            return prev;
-                        });
-                    }
+            ScrollTrigger.matchMedia({
+                // Desktop
+                "(min-width: 1024px)": function () {
+                    createScrollTrigger(true, scrollWidth);
+                },
+                // Mobile
+                "(max-width: 1023px)": function () {
+                    createScrollTrigger(false, scrollWidth);
                 }
             });
 
-            // Start strictly at the beginning of the lateral scroll
-            tl.addLabel("slide0");
-
-            const numSlides = CASOS_DATA.length;
-            for (let i = 1; i < numSlides; i++) {
-                tl.to(scrollTrackRef.current, {
-                    x: -(scrollWidth / (numSlides - 1)) * i,
-                    ease: "none",
-                    duration: 1
+            function createScrollTrigger(isDesktop: boolean, distance: number) {
+                // A timeline approach to create the initial block and snap perfectly:
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: triggerRef.current,
+                        pin: true,
+                        pinType: isDesktop ? "transform" : "fixed", // transform fixes jump on desktop, fixed stops rubber banding on iOS
+                        scrub: 1, // Reduced from 2 since Lenis provides the base inertia
+                        end: () => `+=${distance}`,
+                        invalidateOnRefresh: true,
+                        anticipatePin: 1,
+                        snap: {
+                            snapTo: "labelsDirectional",
+                            duration: { min: 0.2, max: 0.6 },
+                            delay: 0.05,
+                            ease: "power1.inOut"
+                        },
+                        onUpdate: (self) => {
+                            // Keep the UI buttons updated based on raw linear progress
+                            const index = Math.min(
+                                Math.round(self.progress * (CASOS_DATA.length - 1)),
+                                CASOS_DATA.length - 1
+                            );
+                            setCurrentIndex((prev: number) => {
+                                if (prev !== index) return index;
+                                return prev;
+                            });
+                        }
+                    }
                 });
-                tl.addLabel(`slide${i}`);
+
+                // Start strictly at the beginning of the lateral scroll
+                tl.addLabel("slide0");
+
+                const numSlides = CASOS_DATA.length;
+                for (let i = 1; i < numSlides; i++) {
+                    tl.to(scrollTrackRef.current, {
+                        x: -(distance / (numSlides - 1)) * i,
+                        ease: "none",
+                        duration: 1
+                    });
+                    tl.addLabel(`slide${i}`);
+                }
             }
         }, sectionRef);
 
@@ -136,17 +149,21 @@ export default function Exito() {
         const nextIndex = Math.min(currentIndex + 1, CASOS_DATA.length - 1);
         if (nextIndex === currentIndex) return;
 
-        window.scrollBy({
-            top: window.innerHeight,
-            behavior: "smooth"
-        });
+        if (scrollTrackRef.current) {
+            const scrollWidth = scrollTrackRef.current.scrollWidth - window.innerWidth;
+            const distancePerSlide = scrollWidth / (CASOS_DATA.length - 1);
+            window.scrollBy({
+                top: distancePerSlide,
+                behavior: "smooth"
+            });
+        }
     };
 
     return (
         <section ref={sectionRef} id="exito" className="relative w-full bg-[#083e45] text-white">
 
             {/* The Trigger Element that gets Pinned */}
-            <div ref={triggerRef} className="h-screen w-full overflow-hidden flex flex-col relative pt-[40px] lg:pt-[72px]">
+            <div ref={triggerRef} className="h-screen w-full overflow-hidden flex flex-col relative pt-[110px] lg:pt-[140px] touch-pan-y">
 
                 {/* Fixed Top Left Header Content (Now in normal flow so it doesn't overlap) */}
                 <div className="w-full px-6 lg:px-[84px] z-30 shrink-0">
@@ -163,12 +180,12 @@ export default function Exito() {
                         <div key={caso.id} className="w-screen h-full flex-shrink-0 relative flex flex-col justify-end">
 
                             {/* Top Text Block */}
-                            <div className="flex flex-col gap-[32px] w-full shrink-0 z-20 px-6 lg:px-[96px] max-w-[1200px] pb-[40px] lg:pb-[72px]">
+                            <div className="flex flex-col gap-[20px] lg:gap-[32px] w-full shrink-0 z-20 px-6 lg:px-[96px] max-w-[1200px] pb-[24px] lg:pb-[40px]">
                                 <div className="flex flex-col gap-[12px]">
-                                    <h3 className="font-sans text-[48px] lg:text-[60px] text-[#48d7de] leading-[1.1]">
+                                    <h3 className="font-sans text-[36px] lg:text-[60px] text-[#48d7de] leading-[1.1]">
                                         {caso.title}
                                     </h3>
-                                    <p className="font-sans text-[18px] lg:text-[20px] text-white leading-tight lg:leading-[normal]">
+                                    <p className="font-sans text-[16px] lg:text-[20px] text-white leading-tight lg:leading-[normal]">
                                         {caso.description}
                                     </p>
 
@@ -187,7 +204,7 @@ export default function Exito() {
                             </div>
 
                             {/* Bottom Full Width Image Layout Block */}
-                            <div className="w-full h-[200px] lg:h-[300px] shrink-0 relative bg-[#1a4a52] overflow-hidden mt-auto">
+                            <div className="w-full h-[25vh] max-h-[250px] lg:h-[35vh] lg:max-h-[350px] min-h-[140px] lg:min-h-[180px] shrink relative bg-[#1a4a52] overflow-hidden mt-auto">
                                 <img src={caso.image} alt={caso.title} className="w-full h-full object-cover" />
                             </div>
 

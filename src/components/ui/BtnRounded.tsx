@@ -5,12 +5,13 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { motion } from "framer-motion";
+import { Instagram, Linkedin } from "lucide-react";
 
 gsap.registerPlugin(useGSAP);
 
 export type BtnRoundedProps = {
     className?: string;
-    variant?: "telf-closed" | "telf-open" | "mail-closed" | "mail-open" | "name_closed" | "name_open";
+    variant?: "telf-closed" | "telf-open" | "mail-closed" | "mail-open" | "name_closed" | "name_open" | "instagram" | "linkedin";
     interactive?: boolean;
     isForcedOpen?: boolean;
 };
@@ -32,14 +33,19 @@ export default function BtnRounded({ className, variant = "telf-closed", interac
 
     // Initial styling Setup based on variant
     const isName = variant === "name_closed" || variant === "name_open";
+    const isInstagram = variant === "instagram";
+    const isLinkedin = variant === "linkedin";
+
     const closedTextContent = isName ? "Isa" : "";
     let openTextContent = "Un mail";
     if (variant.startsWith("telf")) openTextContent = "Llámanos";
     if (isName) openTextContent = "PPC Specialist";
+    if (isInstagram) openTextContent = "Instagram";
+    if (isLinkedin) openTextContent = "LinkedIn";
 
-    const closedBg = isName ? "#083e45" : "#48d7de";
+    const closedBg = isName || isInstagram || isLinkedin ? "#083e45" : "#48d7de";
     const openBg = "#ffffff";
-    const closedTextColor = isName ? "#48d7de" : "#083e45";
+    const closedTextColor = isName || isInstagram || isLinkedin ? "#48d7de" : "#083e45";
     const openTextColor = "#083e45";
 
     const getIconSrc = () => {
@@ -135,7 +141,13 @@ export default function BtnRounded({ className, variant = "telf-closed", interac
             }}
         >
             <div className="relative shrink-0 w-[16px] h-[16px] lg:w-[24px] lg:h-[24px] flex items-center justify-center">
-                <Image alt="icon" fill className="object-contain" src={getIconSrc()} />
+                {isInstagram ? (
+                    <Instagram color={closedTextColor} className="w-full h-full" strokeWidth={1.5} />
+                ) : isLinkedin ? (
+                    <Linkedin color={closedTextColor} className="w-full h-full" strokeWidth={1.5} />
+                ) : (
+                    <Image alt="icon" fill className="object-contain" src={getIconSrc()} />
+                )}
             </div>
 
             {closedTextContent && (

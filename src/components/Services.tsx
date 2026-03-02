@@ -15,7 +15,8 @@ if (typeof window !== "undefined") {
 const SERVICIOS_DATA: ServiceData[] = [
     {
         id: "marketing",
-        title: "Marketing Online",
+        title: "Marketing\nOnline",
+        modalTitle: "Marketing Online",
         description: "Captar reservas directas a través de campañas segmentadas. Anuncios emocionales en Spotify y redes sociales que posicionan al hotel como una experiencia única.",
         stats: [{
             value: "+25%",
@@ -26,7 +27,8 @@ const SERVICIOS_DATA: ServiceData[] = [
     },
     {
         id: "desarrollo",
-        title: "Desarrollo Web",
+        title: "Desarrollo\nWeb",
+        modalTitle: "Desarrollo Web",
         description: "Páginas súper rápidas, visuales y con el motor de reservas totalmente integrado. Una experiencia de usuario optimizada para la conversión.",
         stats: [{
             value: "+40%",
@@ -36,7 +38,8 @@ const SERVICIOS_DATA: ServiceData[] = [
     },
     {
         id: "seo",
-        title: "Posicionamiento Orgánico",
+        title: "Posicionamiento\nOrgánico",
+        modalTitle: "Posicionamiento Orgánico",
         description: "Aparece el primero en Google cuando los viajeros busquen hotel en tu ciudad. Estrategias SEO combinadas de largo recorrido.",
         stats: [{
             value: "Top 3",
@@ -46,7 +49,8 @@ const SERVICIOS_DATA: ServiceData[] = [
     },
     {
         id: "analitica",
-        title: "Analítica Web",
+        title: "Analítica\nWeb",
+        modalTitle: "Analítica Web",
         description: "Datos precisos sobre el comportamiento de los clientes. Cada click de reserva se mide para escalar la inversión con mayor certeza.",
         stats: [{
             value: "95%",
@@ -85,50 +89,58 @@ export default function Services() {
             // We use 'power2.inOut' ease: starts slow (the block feeling), accelerates, decelerates.
             const scrollWidth = scrollTrackRef.current.scrollWidth - window.innerWidth;
 
-            // To create the "block" effect, we increase the total scroll distance (end pointer)
-            // but we apply an ease that starts flat. Or we can just animate the x value with 
-            // a custom timeline where the first part does nothing.
-
-            // A simpler approach for the block is to use a timeline with an empty tween at the start
-            // and label-based snapping to ensure perfect alignment without bouncing.
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: triggerRef.current,
-                    pin: true,
-                    pinType: "transform", // This often smooths out the vertical pin catching
-                    scrub: 1, // Reduced from 2 since Lenis provides the base inertia
-                    end: () => `+=${scrollWidth}`,
-                    invalidateOnRefresh: true,
-                    anticipatePin: 1,
-                    snap: {
-                        snapTo: "labelsDirectional",
-                        duration: { min: 0.2, max: 0.6 },
-                        delay: 0.05,
-                        ease: "power1.inOut"
-                    },
-                    onUpdate: (self) => {
-                        // Keep the UI buttons updated based on raw linear progress
-                        const index = Math.round(self.progress * (SERVICIOS_DATA.length - 1));
-                        setCurrentIndex((prev) => {
-                            if (prev !== index) return Math.min(index, SERVICIOS_DATA.length - 1);
-                            return prev;
-                        });
-                    }
+            ScrollTrigger.matchMedia({
+                // Desktop
+                "(min-width: 1024px)": function () {
+                    createScrollTrigger(true, scrollWidth);
+                },
+                // Mobile
+                "(max-width: 1023px)": function () {
+                    createScrollTrigger(false, scrollWidth);
                 }
             });
 
-            // Start strictly at the beginning of the lateral scroll
-            tl.addLabel("slide0");
-
-            // Build the segments label by label for precision tracking
-            const numSlides = SERVICIOS_DATA.length;
-            for (let i = 1; i < numSlides; i++) {
-                tl.to(scrollTrackRef.current, {
-                    x: -(scrollWidth / (numSlides - 1)) * i,
-                    ease: "none", // Linear mapping between snap points
-                    duration: 1
+            function createScrollTrigger(isDesktop: boolean, distance: number) {
+                // A timeline approach to create the initial block and snap perfectly:
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: triggerRef.current,
+                        pin: true,
+                        pinType: isDesktop ? "transform" : "fixed", // transform fixes jump on desktop, fixed stops rubber banding on iOS
+                        scrub: 1, // Reduced from 2 since Lenis provides the base inertia
+                        end: () => `+=${distance}`,
+                        invalidateOnRefresh: true,
+                        anticipatePin: 1,
+                        snap: {
+                            snapTo: "labelsDirectional",
+                            duration: { min: 0.2, max: 0.6 },
+                            delay: 0.05,
+                            ease: "power1.inOut"
+                        },
+                        onUpdate: (self) => {
+                            // Keep the UI buttons updated based on raw linear progress
+                            const index = Math.round(self.progress * (SERVICIOS_DATA.length - 1));
+                            setCurrentIndex((prev) => {
+                                if (prev !== index) return Math.min(index, SERVICIOS_DATA.length - 1);
+                                return prev;
+                            });
+                        }
+                    }
                 });
-                tl.addLabel(`slide${i}`);
+
+                // Start strictly at the beginning of the lateral scroll
+                tl.addLabel("slide0");
+
+                // Build the segments label by label for precision tracking
+                const numSlides = SERVICIOS_DATA.length;
+                for (let i = 1; i < numSlides; i++) {
+                    tl.to(scrollTrackRef.current, {
+                        x: -(distance / (numSlides - 1)) * i,
+                        ease: "none", // Linear mapping between snap points
+                        duration: 1
+                    });
+                    tl.addLabel(`slide${i}`);
+                }
             }
         }, sectionRef);
 
@@ -156,7 +168,7 @@ export default function Services() {
         <section ref={sectionRef} id="servicios" className="relative w-full bg-[#083e45] text-white">
 
             {/* The Trigger Element that gets Pinned */}
-            <div ref={triggerRef} className="h-screen w-full overflow-hidden flex flex-col relative">
+            <div ref={triggerRef} className="h-screen w-full overflow-hidden flex flex-col relative touch-pan-y">
 
                 {/* The Horizontal Track */}
                 <div ref={scrollTrackRef} className="flex h-full w-[400vw] will-change-transform">
@@ -168,7 +180,7 @@ export default function Services() {
                                 <div className="grid-desktop">
                                     <div className="col-span-12 lg:col-span-8 flex flex-col gap-[32px] items-start text-left">
                                         <div className="flex flex-col gap-[12px]">
-                                            <h3 className="font-sans text-[48px] lg:text-[60px] text-[#48d7de] leading-[1.1] text-left">
+                                            <h3 className="font-sans text-[48px] lg:text-[60px] text-[#48d7de] leading-[1.1] text-left whitespace-pre-wrap">
                                                 {service.title}
                                             </h3>
                                             <p className="font-sans text-[18px] lg:text-[20px] text-white max-w-[800px] text-left">

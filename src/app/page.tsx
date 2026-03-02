@@ -4,7 +4,6 @@ import Services from "@/components/Services";
 import Metricas from "@/components/Metricas";
 import Exito from "@/components/Exito";
 import SobreNosotros from "@/components/SobreNosotros";
-import CtaPreFooter from "@/components/CtaPreFooter";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -16,7 +15,6 @@ export default function Home() {
       <Metricas />
       <Exito />
       <SobreNosotros />
-      <CtaPreFooter />
       <Footer />
     </main>
   );

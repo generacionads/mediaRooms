@@ -8,9 +8,10 @@ export type EnlacesProps = {
     variant?: "link_hover" | "link_default";
     children: React.ReactNode;
     href?: string;
+    onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 };
 
-export default function Enlaces({ className, variant = "link_default", children, href = "#" }: EnlacesProps) {
+export default function Enlaces({ className, variant = "link_default", children, href = "#", onClick }: EnlacesProps) {
     const [isHovered, setIsHovered] = useState(false);
     const currentVariant = isHovered ? "link_hover" : variant;
     const isLinkHover = currentVariant === "link_hover";
@@ -18,6 +19,7 @@ export default function Enlaces({ className, variant = "link_default", children,
     return (
         <motion.a
             href={href}
+            onClick={onClick}
             className={`block relative w-full lg:w-[1320px] transition-colors duration-300 ${className || ""}`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}

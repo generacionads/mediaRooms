@@ -24,7 +24,7 @@ export default function BtnMenu({ className, variant = "btn_close", onClick, tex
     const pathRef = useRef<SVGPathElement>(null);
     const textRef = useRef<HTMLParagraphElement>(null);
 
-    const buttonText = text ? text : "Menú";
+    const buttonText = text ? text : "menú";
 
     const tlRef = useRef<gsap.core.Timeline | null>(null);
     const isHoveredRef = useRef(false);
