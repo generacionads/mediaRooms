@@ -33,20 +33,38 @@ export default function BtnPry({ className, theme = "cyan", text = "Calcula tu A
     const defaultBg = isCyanTheme ? "#48d7de" : "#083e45";
     const defaultFg = isCyanTheme ? "#083e45" : "#48d7de";
 
+    // Magnetic Tracking Refs
+    const mouseXRef = useRef(0);
+    const xTo = useRef<gsap.QuickToFunc | null>(null);
+
     useGSAP(() => {
-        // Create a paused timeline that animates the button collapsing into a circle
+        if (action === "collapse" && containerRef.current) {
+            // Setup a high-performance instant tracker specific for X coordinates
+            xTo.current = gsap.quickTo(containerRef.current, "x", { duration: 0.15, ease: "power2.out" });
+        }
+
+        // Create a paused timeline that animates the button collapsing
         const tl = gsap.timeline({
             paused: true,
+            onUpdate: () => {
+                // The magic formula: as the padding smoothly collapses (progress 0 -> 1)
+                // We proportionally unlock the tracked X coordinate (100px * 0.5) = 50px
+                // Which means the container never physically shoots out of its boundary limits.
+                if (action === "collapse" && xTo.current) {
+                    xTo.current(mouseXRef.current * tl.progress());
+                }
+            },
             onComplete: () => {
-                // When finishing the collapse/expand, if the user already moved away, reverse it
-                if (!isHoveredRef.current) {
+                // When finishing the collapse/expand, if the user already moved away, 
+                // and it's NOT the collapse action (which handles leaving dynamically), reverse it
+                if (!isHoveredRef.current && action !== "collapse") {
                     tl.reverse();
                 }
             }
         });
 
         if (action === "collapse") {
-            // Easing for the container to collapse
+            // Easing for the container to collapse padding
             tl.to(containerRef.current, {
                 paddingLeft: 24,
                 paddingRight: 24,
@@ -90,21 +108,54 @@ export default function BtnPry({ className, theme = "cyan", text = "Calcula tu A
         tlRef.current = tl;
     }, [action]);
 
-    const handleMouseEnter = () => {
+    const calculateTargetX = (e: React.MouseEvent | MouseEvent) => {
+        if (!parentRef.current) return 0;
+        const rect = parentRef.current.getBoundingClientRect();
+        const cursorX = e.clientX - rect.left;
+        const centerX = rect.width / 2;
+        let targetX = cursorX - centerX;
+
+        const finalWidth = window.innerWidth >= 1024 ? 73 : 56;
+        const maxOffset = Math.max(0, (rect.width - finalWidth) / 2);
+
+        if (targetX > maxOffset) targetX = maxOffset;
+        if (targetX < -maxOffset) targetX = -maxOffset;
+
+        return targetX;
+    };
+
+    const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
         isHoveredRef.current = true;
+
+        if (action === "collapse") {
+            mouseXRef.current = calculateTargetX(e);
+        }
+
         if (tlRef.current) {
             tlRef.current.play();
         }
     };
 
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!isHoveredRef.current || action !== "collapse") return;
+
+        // Continuously update the mathematical target relative to the cursor
+        mouseXRef.current = calculateTargetX(e);
+
+        // If the timeline finished (progress=1), we actively send coordinates to the tracker.
+        // If progressing, tl's onUpdate handles it proportionally to prevent layout stretching!
+        if (tlRef.current && tlRef.current.progress() === 1 && xTo.current) {
+            xTo.current(mouseXRef.current);
+        }
+    };
+
     const handleMouseLeave = () => {
         isHoveredRef.current = false;
+
+        // Rather than strictly locking pointer-events (which swallows fast clicks),
+        // we just smoothly let the tracker return to 0 through the timeline progress.
         if (tlRef.current) {
-            // Only reverse if the timeline is already done playing forward
-            if (tlRef.current.progress() === 1) {
-                tlRef.current.reverse();
-            }
-            // If it's still playing forward (progress < 1), we let the onComplete handle it
+            tlRef.current.reverse();
         }
     };
 
@@ -121,34 +172,39 @@ export default function BtnPry({ className, theme = "cyan", text = "Calcula tu A
     }, [text, action]);
 
     return (
-        <motion.div
-            whileTap={{ scale: 0.93 }}
+        <div
             ref={parentRef}
             className={`relative flex items-center justify-center cursor-pointer ${className || ""}`}
             onMouseEnter={handleMouseEnter}
+            onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             onClick={onClick}
             style={{ width: wrapperWidth !== "auto" ? wrapperWidth : "max-content", height: "100%" }}
         >
-            <div
-                ref={containerRef}
-                className="flex items-center justify-center relative rounded-[99px] h-[56px] lg:h-[73px] overflow-hidden px-[24px] lg:px-[32px] py-[16px] lg:py-[24px] gap-[8px] lg:gap-[12px]"
-                style={{ backgroundColor: defaultBg }}
+            <motion.div
+                whileTap={{ scale: 0.93 }}
+                className="w-full h-full flex items-center justify-center"
             >
-                <p
-                    ref={textRef}
-                    className="font-['Gebuk'] leading-[normal] not-italic relative shrink-0 text-[24px] lg:text-[32px] whitespace-nowrap overflow-hidden"
-                    style={{ color: defaultFg }}
+                <div
+                    ref={containerRef}
+                    className="flex items-center justify-center relative rounded-[99px] h-[56px] lg:h-[73px] overflow-hidden px-[24px] lg:px-[32px] py-[16px] lg:py-[24px] gap-[8px] lg:gap-[12px]"
+                    style={{ backgroundColor: defaultBg }}
                 >
-                    {text}
-                </p>
+                    <p
+                        ref={textRef}
+                        className="font-['Gebuk'] leading-[normal] not-italic relative shrink-0 text-[24px] lg:text-[32px] whitespace-nowrap overflow-hidden"
+                        style={{ color: defaultFg }}
+                    >
+                        {text}
+                    </p>
 
-                <div className="relative shrink-0 w-[20px] h-[20px] lg:w-[24px] lg:h-[24px] flex items-center justify-center">
-                    <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d={PATH_ARROW} fill={defaultFg} />
-                    </svg>
+                    <div className="relative shrink-0 w-[20px] h-[20px] lg:w-[24px] lg:h-[24px] flex items-center justify-center">
+                        <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d={PATH_ARROW} fill={defaultFg} />
+                        </svg>
+                    </div>
                 </div>
-            </div>
-        </motion.div>
+            </motion.div>
+        </div>
     );
 }

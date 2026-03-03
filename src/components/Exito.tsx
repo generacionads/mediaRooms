@@ -30,12 +30,12 @@ const CASOS_DATA = [
     },
     {
         id: "madrid",
-        title: "Hotel Boutique Madrid",
+        title: "Hotel 3* en Ibiza",
         description: "Rediseño completo de la experiencia digital y motor de reservas personalizado. Incremento del 45% en conversión móvil durante el primer trimestre.",
         modalTitle: "Resultados tras el rediseño digital integral",
         modalDescription: "Modernizamos la presencia online para capturar reservas directas y ofrecer una experiencia premium desde el primer click.",
         tags: ["Desarrollo web", "UX/UI Design", "CRO", "Analítica"],
-        image: IMG_IBIZA, // Using available Ibiza image as placeholder until others uploaded
+        image: "/images/Hotel 3 ibiza.jpg",
         stats: [
             { value: "+45%", label: "Conversión móvil", desc: "Incremento en tasa de reserva vía smartphone." },
             { value: "+30%", label: "Tráfico orgánico", desc: "Crecimiento de visitas en los primeros 3 meses." },
@@ -44,12 +44,12 @@ const CASOS_DATA = [
     },
     {
         id: "mallorca",
-        title: "Resort 5* Mallorca",
+        title: "Hotel 3* en Ibiza",
         description: "Estrategia integral de captación B2C para temporada alta. Reducción drástica de la dependencia de OTAs mediante campañas directas de alto impacto.",
         modalTitle: "Resultados de la campaña B2C de captación directa",
         modalDescription: "Desarrollamos una estrategia multicanal enfocada en maximizar la ocupación en temporada alta sin depender de plataformas de terceros.",
         tags: ["Marketing online", "Estrategia 360", "CRM", "Email Marketing"],
-        image: IMG_IBIZA, // Using available Ibiza image as placeholder until others uploaded
+        image: "/images/Hotel 3 ibiza.jpg",
         stats: [
             { value: "+50%", label: "Reservas directas", desc: "Aumento de captación a través de canales propios." },
             { value: "+12%", label: "Ticket medio", desc: "Incremento del valor promedio por reserva." },
@@ -108,7 +108,7 @@ export default function Exito() {
                         invalidateOnRefresh: true,
                         anticipatePin: 1,
                         snap: {
-                            snapTo: "labelsDirectional",
+                            snapTo: "labels",
                             duration: { min: 0.2, max: 0.6 },
                             delay: 0.05,
                             ease: "power1.inOut"
@@ -146,6 +146,18 @@ export default function Exito() {
     }, []);
 
     const handleNextSlide = () => {
+        const isLastSlide = currentIndex === CASOS_DATA.length - 1;
+
+        if (isLastSlide) {
+            // Scroll down past the section
+            const windowHeight = window.innerHeight;
+            window.scrollBy({
+                top: windowHeight * 0.8, // Scroll down a solid chunk
+                behavior: "smooth"
+            });
+            return;
+        }
+
         const nextIndex = Math.min(currentIndex + 1, CASOS_DATA.length - 1);
         if (nextIndex === currentIndex) return;
 
@@ -217,8 +229,19 @@ export default function Exito() {
                     className="absolute z-50 bottom-[40px] right-[40px] pointer-events-auto"
                     onClick={handleNextSlide}
                 >
-                    <div className={`bg-[#48d7de] w-[80px] h-[70px] lg:w-[105px] lg:h-[89px] rounded-[46px] flex items-center justify-center shadow-xl cursor-pointer hover:scale-95 transition-all ${currentIndex === CASOS_DATA.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[30px] lg:w-[42px]">
+                    <div
+                        className={`
+                            rounded-[46px] flex items-center justify-center shadow-xl cursor-pointer transition-all duration-300 ease-out
+                            ${currentIndex === CASOS_DATA.length - 1
+                                ? 'bg-white w-[80px] h-[70px] lg:w-[105px] lg:h-[89px] hover:scale-95'
+                                : 'bg-[#48d7de] w-[60px] h-[50px] lg:w-[80px] lg:h-[65px] hover:scale-105'
+                            }
+                        `}
+                    >
+                        <svg
+                            width="42" height="42" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            className={`w-[30px] lg:w-[42px] transition-transform duration-300 ease-out ${currentIndex === CASOS_DATA.length - 1 ? 'rotate-90' : ''}`}
+                        >
                             <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="#083e45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                     </div>

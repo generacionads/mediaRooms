@@ -70,6 +70,9 @@ export default function Services() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedService, setSelectedService] = useState<ServiceData | null>(null);
 
+    // GSAP Timeline reference for external navigation events
+    const [timelineRef, setTimelineRef] = useState<gsap.core.Timeline | null>(null);
+
     const openModal = (service: ServiceData) => {
         setSelectedService(service);
         setIsModalOpen(true);
@@ -112,7 +115,7 @@ export default function Services() {
                         invalidateOnRefresh: true,
                         anticipatePin: 1,
                         snap: {
-                            snapTo: "labelsDirectional",
+                            snapTo: "labels",
                             duration: { min: 0.2, max: 0.6 },
                             delay: 0.05,
                             ease: "power1.inOut"
@@ -141,13 +144,61 @@ export default function Services() {
                     });
                     tl.addLabel(`slide${i}`);
                 }
+
+                // Expose timeline explicitly to React state for external listeners
+                setTimelineRef(tl);
             }
         }, sectionRef);
 
         return () => ctx.revert(); // Proper React cleanup for GSAP
     }, []); // Only run once on mount to prevent GSAP timeline resets when currentIndex changes
 
+    // External Navigation Event Listener (from Strategy.tsx)
+    useLayoutEffect(() => {
+        const handleNavigate = (e: Event) => {
+            const customEvent = e as CustomEvent<{ index: number }>;
+            const targetIndex = customEvent.detail.index;
+
+            if (timelineRef && timelineRef.scrollTrigger) {
+                const st = timelineRef.scrollTrigger;
+                // Get absolute time position of label on timeline (0 to duration)
+                const labelTime = timelineRef.labels[`slide${targetIndex}`] || 0;
+                // Calculate proportional progress
+                const progress = labelTime / timelineRef.duration();
+                // Determine raw pixel destination using ScrollTrigger boundaries
+                const destinationScrollY = st.start + (st.end - st.start) * progress;
+
+                if (window.lenis) {
+                    window.lenis.scrollTo(destinationScrollY, {
+                        duration: 1.5,
+                        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+                    });
+                } else {
+                    window.scrollTo({
+                        top: destinationScrollY,
+                        behavior: "smooth"
+                    });
+                }
+            }
+        };
+
+        window.addEventListener("navigateToService", handleNavigate);
+        return () => window.removeEventListener("navigateToService", handleNavigate);
+    }, [timelineRef]);
+
     const handleNextSlide = () => {
+        const isLastSlide = currentIndex === SERVICIOS_DATA.length - 1;
+
+        if (isLastSlide) {
+            // Scroll down past the section
+            const windowHeight = window.innerHeight;
+            window.scrollBy({
+                top: windowHeight * 0.8, // Scroll down a solid chunk
+                behavior: "smooth"
+            });
+            return;
+        }
+
         const nextIndex = Math.min(currentIndex + 1, SERVICIOS_DATA.length - 1);
         if (nextIndex === currentIndex) return;
 
@@ -215,8 +266,19 @@ export default function Services() {
                     className="absolute z-50 bottom-[40px] right-[40px] pointer-events-auto"
                     onClick={handleNextSlide}
                 >
-                    <div className={`bg-[#48d7de] w-[80px] h-[70px] lg:w-[105px] lg:h-[89px] rounded-[46px] flex items-center justify-center shadow-xl cursor-pointer hover:scale-95 hover:bg-white transition-all ${currentIndex === SERVICIOS_DATA.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[30px] lg:w-[42px]">
+                    <div
+                        className={`
+                            rounded-[46px] flex items-center justify-center shadow-xl cursor-pointer transition-all duration-300 ease-out
+                            ${currentIndex === SERVICIOS_DATA.length - 1
+                                ? 'bg-white w-[80px] h-[70px] lg:w-[105px] lg:h-[89px] hover:scale-95'
+                                : 'bg-[#48d7de] w-[60px] h-[50px] lg:w-[80px] lg:h-[65px] hover:scale-105'
+                            }
+                        `}
+                    >
+                        <svg
+                            width="42" height="42" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            className={`w-[30px] lg:w-[42px] transition-transform duration-300 ease-out ${currentIndex === SERVICIOS_DATA.length - 1 ? 'rotate-90' : ''}`}
+                        >
                             <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="#083e45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                     </div>

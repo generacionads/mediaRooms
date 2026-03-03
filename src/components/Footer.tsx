@@ -1,4 +1,5 @@
 import BtnRounded from "@/components/ui/BtnRounded";
+import UnderlineHoverLink from "@/components/ui/UnderlineHoverLink";
 
 export default function Footer() {
     return (
@@ -14,28 +15,25 @@ export default function Footer() {
             </div>
 
             {/* Bottom Grid for Links */}
-            <div className="grid-desktop relative z-10 w-full mt-auto pt-[100px] lg:pt-[200px]">
-                {/* On mobile: span from col 5 to col 12 to push past floating buttons. On desktop: span all 12. */}
-                <div className="col-start-6 col-span-7 lg:col-start-1 lg:col-span-12 flex flex-col lg:flex-row justify-between lg:justify-end gap-[32px] lg:gap-[64px] items-start lg:items-center">
+            <div className="grid-desktop relative z-10 w-full mt-auto pt-[100px] lg:pt-[200px] items-start lg:items-center">
 
-                    {/* Legal Links */}
-                    <div className="flex flex-col lg:flex-row font-sans gap-[16px] lg:gap-[64px] text-[#48d7de] text-[11px] text-left lg:text-right w-full lg:w-auto">
-                        <a href="#" className="hover:underline">Aviso legal y política de privacidad</a>
-                        <a href="#" className="hover:underline">Política de cookies</a>
-                        <a href="#" className="hover:underline">Diseñado por Generación Ads</a>
-                    </div>
-
-                    {/* Social Buttons (Right Margin) */}
-                    <div className="flex flex-row gap-[16px] w-full lg:w-auto lg:ml-[64px] items-center justify-start lg:justify-end">
-                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-                            <BtnRounded variant="instagram" />
-                        </a>
-                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-                            <BtnRounded variant="linkedin" />
-                        </a>
-                    </div>
-
+                {/* Legal Links */}
+                <div className="col-start-4 col-span-9 lg:col-start-4 lg:col-span-6 flex flex-col lg:flex-row font-sans gap-[16px] lg:gap-[64px] text-[#48d7de] text-[11px] text-left lg:items-center">
+                    <UnderlineHoverLink href="#" label="Aviso legal y política de privacidad" />
+                    <UnderlineHoverLink href="#" label="Política de cookies" />
+                    <UnderlineHoverLink href="#" label="Diseñado por Generación Ads" />
                 </div>
+
+                {/* Social Buttons */}
+                <div className="col-start-4 col-span-9 lg:col-start-11 lg:col-span-2 flex flex-row gap-[16px] items-center justify-start lg:justify-end mt-[32px] lg:mt-0">
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                        <BtnRounded variant="instagram" />
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                        <BtnRounded variant="linkedin" />
+                    </a>
+                </div>
+
             </div>
         </footer>
     );

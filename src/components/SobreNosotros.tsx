@@ -124,7 +124,7 @@ function TeamMemberTag({ member }: { member: typeof TEAM_MEMBERS[0] }) {
 
     const handleMouseLeave = () => {
         isHoveredRef.current = false;
-        if (tlRef.current && tlRef.current.progress() === 1) {
+        if (tlRef.current) {
             tlRef.current.reverse();
         }
     };

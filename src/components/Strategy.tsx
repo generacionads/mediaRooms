@@ -26,6 +26,26 @@ const SERVICES = [
 ];
 
 export default function Strategy() {
+    const handleServiceClick = (id: string) => {
+        const getServiceIndex = (serviceId: string) => {
+            switch (serviceId) {
+                case "publi": return 0; // Marketing Online
+                case "web": return 1; // Desarrollo Web
+                case "seo": return 2; // Posicionamiento Orgánico
+                case "crm": return 0; // Marketing Online
+                default: return 0;
+            }
+        };
+
+        const targetIndex = getServiceIndex(id);
+
+        // Dispatch a custom event to tell Services.tsx to handle the scroll natively via GSAP
+        const event = new CustomEvent("navigateToService", {
+            detail: { index: targetIndex }
+        });
+        window.dispatchEvent(event);
+    };
+
     return (
         <section id="estrategia" className="relative w-full min-h-screen bg-[#083e45] text-white py-[120px] lg:py-[190px]">
             <div className="grid-desktop">
@@ -64,7 +84,12 @@ export default function Strategy() {
                                 </p>
                             </div>
 
-                            <BtnPry className="mt-auto" action="expand" text="saber más" />
+                            <BtnPry
+                                className="mt-auto"
+                                action="expand"
+                                text="saber más"
+                                onClick={() => handleServiceClick(service.id)}
+                            />
                         </div>
                     ))}
                 </div>

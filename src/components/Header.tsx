@@ -187,10 +187,10 @@ export default function Header() {
 
                   <div className="flex w-fit">
                     <motion.a
-                      href="/calculadora"
+                      href="/contacto"
                       className="w-fit cursor-pointer"
-                      onClick={(e: React.MouseEvent<HTMLAnchorElement>) => handleNavClick(e, "/calculadora", "btn_calculadora")}
-                      animate={getNavAnimation("btn_calculadora")}
+                      onClick={(e: React.MouseEvent<HTMLAnchorElement>) => handleNavClick(e, "/contacto", "btn_contacto")}
+                      animate={getNavAnimation("btn_contacto")}
                       transition={{ duration: 0.3 }}
                     >
                       <motion.div
@@ -199,7 +199,7 @@ export default function Header() {
                           show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } },
                         }}
                       >
-                        <BtnPry theme="dark" />
+                        <BtnPry theme="dark" text="Infórmate gratis" />
                       </motion.div>
                     </motion.a>
                   </div>
