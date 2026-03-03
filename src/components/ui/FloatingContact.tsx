@@ -1,34 +1,53 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import BtnRounded from "@/components/ui/BtnRounded";
 
 export default function FloatingContact() {
     const [isFooterVisible, setIsFooterVisible] = useState(false);
 
+    const pathname = usePathname();
+
     useEffect(() => {
-        const target = document.querySelector("#footerDEF");
-        if (!target) return;
+        // We need to wait a tiny bit for the new page's DOM to paint after a route change
+        const checkAndObserve = () => {
+            const target = document.querySelector("#footerDEF");
+            if (!target) return null;
 
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    setIsFooterVisible(entry.isIntersecting);
-                });
-            },
-            {
-                root: null, // viewport
-                rootMargin: "0px 0px 50px 0px", // Trigger 50px before footer enters viewport
-                threshold: 0, // trigger as soon as ONE pixel of the footer is visible
-            }
-        );
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        setIsFooterVisible(entry.isIntersecting);
+                    });
+                },
+                {
+                    root: null, // viewport
+                    rootMargin: "0px 0px 50px 0px", // Trigger 50px before footer enters viewport
+                    threshold: 0, // trigger as soon as ONE pixel of the footer is visible
+                }
+            );
 
-        observer.observe(target);
+            observer.observe(target);
+            return observer;
+        };
+
+        // Try immediately
+        let observer = checkAndObserve();
+
+        // If not found yet (e.g. Next.js transition in progress), set a small timeout fallback
+        let timeoutId: NodeJS.Timeout;
+        if (!observer) {
+            timeoutId = setTimeout(() => {
+                observer = checkAndObserve();
+            }, 500);
+        }
 
         return () => {
-            if (target) observer.unobserve(target);
+            if (observer) observer.disconnect();
+            if (timeoutId) clearTimeout(timeoutId);
         };
-    }, []);
+    }, [pathname]);
 
     return (
         <div className="fixed bottom-[48px] left-6 lg:left-[96px] flex flex-col items-start gap-[24px] z-40 pointer-events-auto">

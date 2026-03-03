@@ -23,7 +23,7 @@ const SERVICIOS_DATA: ServiceData[] = [
             label: "Ingresos anuales",
             desc: "Promedio de crecimiento anual en ingresos."
         }],
-        image: "/images/marketingonline.jpg"
+        image: "/images/service_marketing.png"
     },
     {
         id: "desarrollo",
@@ -34,7 +34,8 @@ const SERVICIOS_DATA: ServiceData[] = [
             value: "+40%",
             label: "Tasa de conversión",
             desc: "Promedio de aumento en reservas desde la web."
-        }]
+        }],
+        image: "/images/service_desarrollo.png"
     },
     {
         id: "seo",
@@ -45,7 +46,8 @@ const SERVICIOS_DATA: ServiceData[] = [
             value: "Top 3",
             label: "Google Rankings",
             desc: "Posicionamiento promedio en búsquedas locales."
-        }]
+        }],
+        image: "/images/service_seo.png"
     },
     {
         id: "analitica",
@@ -56,7 +58,8 @@ const SERVICIOS_DATA: ServiceData[] = [
             value: "95%",
             label: "Precisión de datos",
             desc: "Trazabilidad completa del embudo de ventas."
-        }]
+        }],
+        image: "/images/service_analitica.png"
     },
 ];
 
