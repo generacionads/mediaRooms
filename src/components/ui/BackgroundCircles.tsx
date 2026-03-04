@@ -82,9 +82,6 @@ export function BackgroundCircles({
 
             <motion.div
                 className="relative z-10 flex items-center justify-center"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1, ease: "easeOut" }}
             >
                 {/* Video inside the circles */}
                 <div className="relative w-[480px] h-[480px] md:w-[480px] md:h-[480px] rounded-full overflow-hidden drop-shadow-[0_0_16px_rgba(72,215,222,0.4)]">
