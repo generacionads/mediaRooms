@@ -17,37 +17,37 @@ const CASOS_DATA = [
     {
         id: "ibiza",
         title: "Hotel 4* en Ibiza",
-        description: "Creación de campañas de publicidad en Google, Meta y otras plataformas como Bing y Pinterest. Campañas orientadas a clientes en Reino Unido, Holanda, Alemania y Suiza.",
+        description: "Creación de campañas de publicidad para este Hotel 4* en Ibiza en Google, Meta y otras plataformas. Campañas orientadas a huéspedes en Reino Unido, Holanda, Alemania y Suiza.",
         modalTitle: "Resultados tras gestión integral de marketing y captación",
-        modalDescription: "Maximizamos la visibilidad de su hotel y optimizamos el funnel de conversión para reducir drásticamente la dependencia de las OTAs y recuperar el control de sus huéspedes.",
+        modalDescription: "Maximizamos la visibilidad de este hotel en Ibiza y optimizamos el funnel de conversión para reducir drásticamente la dependencia de las OTAs y recuperar el control de sus huéspedes.",
         tags: ["Marketing online", "Revenue management", "Posicionamiento orgánico", "Desarrollo web"],
         image: IMG_IBIZA,
         stats: [
-            { value: "+26%", label: "Ingresos anuales", desc: "Promedio de crecimiento anual en clientes." },
-            { value: "+25%", label: "ROAS medio", desc: "Promedio de crecimiento anual en clientes." },
-            { value: "+25%", label: "CPA medio", desc: "Promedio de crecimiento anual en clientes." }
+            { value: "+26%", label: "Ingresos anuales", desc: "Promedio de crecimiento anual en huéspedes." },
+            { value: "+25%", label: "ROAS medio", desc: "Promedio de crecimiento anual en huéspedes." },
+            { value: "+25%", label: "CPA medio", desc: "Promedio de crecimiento anual en huéspedes." }
         ]
     },
     {
         id: "madrid",
         title: "Hotel 4* en Madrid",
-        description: "Rediseño completo de la experiencia digital y motor de reservas personalizado. Incremento del 45% en conversión móvil durante el primer trimestre.",
+        description: "Rediseño completo de la experiencia digital y motor de reservas personalizado para este Hotel 4* en Madrid. Incremento del 45% en conversión móvil durante el primer trimestre.",
         modalTitle: "Resultados tras el rediseño digital integral",
-        modalDescription: "Modernizamos la presencia online para capturar reservas directas y ofrecer una experiencia premium desde el primer click.",
+        modalDescription: "Modernizamos la presencia online de este hotel madrileño para capturar reservas directas y ofrecer una experiencia premium desde el primer click.",
         tags: ["Desarrollo web", "UX/UI Design", "CRO", "Analítica"],
-        image: "/images/Hotel 3 ibiza.jpg",
+        image: "/images/hotel4madrid.jpg",
         stats: [
             { value: "+45%", label: "Conversión móvil", desc: "Incremento en tasa de reserva vía smartphone." },
             { value: "+30%", label: "Tráfico orgánico", desc: "Crecimiento de visitas en los primeros 3 meses." },
-            { value: "-15%", label: "Tasa de rebote", desc: "Mejora en la retención de usuarios en la web." }
+            { value: "-15%", label: "Tasa de rebote", desc: "Mejora en la retención de huéspedes en la web." }
         ]
     },
     {
         id: "mallorca",
         title: "Hotel 3* en Ibiza",
-        description: "Estrategia integral de captación B2C para temporada alta. Reducción drástica de la dependencia de OTAs mediante campañas directas de alto impacto.",
+        description: "Estrategia integral de captación B2C para la temporada alta de este Hotel 3* en Ibiza. Reducción drástica de la dependencia de OTAs mediante campañas directas de alto impacto.",
         modalTitle: "Resultados de la campaña B2C de captación directa",
-        modalDescription: "Desarrollamos una estrategia multicanal enfocada en maximizar la ocupación en temporada alta sin depender de plataformas de terceros.",
+        modalDescription: "Desarrollamos una estrategia multicanal para este hotel ibicenco, enfocada en maximizar la ocupación en temporada alta sin depender de plataformas de terceros.",
         tags: ["Marketing online", "Estrategia 360", "CRM", "Email Marketing"],
         image: "/images/Hotel 3 ibiza.jpg",
         stats: [

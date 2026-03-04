@@ -6,7 +6,7 @@ const SERVICES = [
     {
         id: "publi",
         title: "PUBLI",
-        description: "Captar reservas directas a través de campañas segmentadas."
+        description: "Captar reservas directas a través de campañas de publicidad rentables y segmentadas."
     },
     {
         id: "web",
@@ -16,12 +16,12 @@ const SERVICES = [
     {
         id: "seo",
         title: "SEO",
-        description: "Captar reservas directas a través de campañas segmentadas."
+        description: "Estrategias de posicionamiento orgánico para dominar las búsquedas en Google."
     },
     {
         id: "crm",
         title: "CRM",
-        description: "Captar reservas directas a través de campañas segmentadas."
+        description: "Fidelización de tus huéspedes y automatización para maximizar el valor por reserva."
     }
 ];
 
@@ -61,7 +61,7 @@ export default function Strategy() {
                     <div className="flex flex-col w-full items-start justify-start gap-[24px]">
                         {/* Main Headline */}
                         <h2 className="font-sans text-[40px] lg:text-[60px] leading-[1.1] lg:leading-[70px] text-[#48d7de] max-w-[1043px]">
-                            Te ayudamos a conseguir más clientes y a olvidarte de las comisiones.
+                            Te ayudamos a conseguir más huéspedes y a olvidarte de las comisiones.
                         </h2>
 
                         {/* Subheading */}
@@ -72,20 +72,18 @@ export default function Strategy() {
                 </div>
 
                 {/* Services Grid (Shifted Right) */}
-                <div className="col-span-12 lg:col-span-10 lg:col-start-3 w-full flex flex-col lg:flex-row gap-[40px] lg:gap-[64px] justify-between">
+                <div className="col-span-12 lg:col-span-10 lg:col-start-3 w-full grid grid-cols-1 lg:grid-cols-4 gap-[40px] lg:gap-[64px] items-stretch">
                     {SERVICES.map((service) => (
-                        <div key={service.id} className="flex flex-col h-auto min-h-[160px] lg:min-h-[267px] justify-between items-start w-full lg:w-[213px]">
-                            <div className="flex flex-col gap-[16px] items-start w-full mb-[24px] lg:mb-[32px]">
-                                <h3 className="font-sans text-[48px] lg:text-[60px] leading-[1.1] lg:leading-[70px] text-[#48d7de]">
-                                    {service.title}
-                                </h3>
-                                <p className="font-sans text-[18px] lg:text-[20px] leading-[normal] text-white">
-                                    {service.description}
-                                </p>
-                            </div>
+                        <div key={service.id} className="grid grid-rows-[auto_1fr_auto] gap-[16px] items-start w-full">
+                            <h3 className="font-sans text-[48px] lg:text-[60px] leading-[1.1] lg:leading-[70px] text-[#48d7de]">
+                                {service.title}
+                            </h3>
+                            <p className="font-sans text-[18px] lg:text-[20px] leading-[normal] text-white">
+                                {service.description}
+                            </p>
 
                             <BtnPry
-                                className="mt-auto"
+                                className="mt-[8px] lg:mt-[16px]"
                                 action="expand"
                                 text="saber más"
                                 onClick={() => handleServiceClick(service.id)}

@@ -26,10 +26,10 @@ export default function Footer() {
 
                 {/* Social Buttons */}
                 <div className="col-start-4 col-span-9 lg:col-start-11 lg:col-span-2 flex flex-row gap-[16px] items-center justify-start lg:justify-end mt-[32px] lg:mt-0">
-                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                    <a href="https://www.instagram.com/mediarooms_es/" target="_blank" rel="noopener noreferrer">
                         <BtnRounded variant="instagram" />
                     </a>
-                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                    <a href="https://www.linkedin.com/company/mediarooms/" target="_blank" rel="noopener noreferrer">
                         <BtnRounded variant="linkedin" />
                     </a>
                 </div>

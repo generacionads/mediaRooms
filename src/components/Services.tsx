@@ -16,48 +16,52 @@ const SERVICIOS_DATA: ServiceData[] = [
     {
         id: "marketing",
         title: "Marketing\nOnline",
-        modalTitle: "Marketing Online",
-        description: "Captar reservas directas a través de campañas segmentadas. Anuncios emocionales en Spotify y redes sociales que posicionan al hotel como una experiencia única.",
+        modalTitle: "Marketing Online que Convierte",
+        description: "Multiplica tus reservas directas con campañas de alto impacto. Impactamos a tus huéspedes potenciales en el momento exacto de su decisión de compra.",
+        modalDescription: "Diseñamos y ejecutamos campañas altamente rentables en las plataformas más efectivas (Google Ads, Meta, Bing, TripAdvisor). Optimizamos cada euro de tu presupuesto para asegurar que cada clic te acerque a una reserva directa, logrando reducir la dependencia de intermediarios y mejorando tus márgenes.",
         stats: [{
             value: "+25%",
-            label: "Ingresos anuales",
-            desc: "Promedio de crecimiento anual en ingresos."
+            label: "Ingresos directos",
+            desc: "Promedio de crecimiento anual en reservas propias."
         }],
         image: "/images/service_marketing.png"
     },
     {
         id: "desarrollo",
         title: "Desarrollo\nWeb",
-        modalTitle: "Desarrollo Web",
-        description: "Páginas súper rápidas, visuales y con el motor de reservas totalmente integrado. Una experiencia de usuario optimizada para la conversión.",
+        modalTitle: "Desarrollo Web Premium",
+        description: "Tu web es el principal activo de tu hotel. Desarrollamos páginas ultra-rápidas, persuasivas y optimizadas al máximo para vender habitaciones.",
+        modalDescription: "Creamos experiencias digitales exclusivas que enamoran al huésped desde el primer segundo. Integramos tu motor de reservas sin fricciones y aplicamos técnicas de CRO (optimización de conversión) para guiar al huésped hacia la compra de la forma más sencilla, segura e intuitiva posible.",
         stats: [{
             value: "+40%",
             label: "Tasa de conversión",
-            desc: "Promedio de aumento en reservas desde la web."
+            desc: "Promedio de aumento en reservas desde la web oficial."
         }],
         image: "/images/service_desarrollo.png"
     },
     {
         id: "seo",
         title: "Posicionamiento\nOrgánico",
-        modalTitle: "Posicionamiento Orgánico",
-        description: "Aparece el primero en Google cuando los viajeros busquen hotel en tu ciudad. Estrategias SEO combinadas de largo recorrido.",
+        modalTitle: "Estrategia SEO de Alto Retorno",
+        description: "Domina las búsquedas en Google y atrae tráfico cualificado sin costes por clic. Destaca cuando los viajeros buscan un hotel en tu destino.",
+        modalDescription: "Implementamos estrategias SEO locales y de nicho estructurando tu web para asegurar un flujo constante, orgánico y rentable de reservas directas.",
         stats: [{
             value: "Top 3",
-            label: "Google Rankings",
-            desc: "Posicionamiento promedio en búsquedas locales."
+            label: "Top Rankings en Google",
+            desc: "Garantizamos visibilidad en las búsquedas clave más importantes."
         }],
         image: "/images/service_seo.png"
     },
     {
         id: "analitica",
         title: "Analítica\nWeb",
-        modalTitle: "Analítica Web",
-        description: "Datos precisos sobre el comportamiento de los clientes. Cada click de reserva se mide para escalar la inversión con mayor certeza.",
+        modalTitle: "Analítica Avanzada y Datos",
+        description: "Toma decisiones fundamentadas en datos reales. Comprendemos el comportamiento de tus huéspedes para detectar oportunidades y escalar la inversión.",
+        modalDescription: "Configuramos sistemas de trackeo precisos (Google Analytics 4, Tag Manager) para trazar el embudo completo del huésped. Medimos cada interacción de reserva para identificar exactamente qué canales generan más rentabilidad y dónde estás perdiendo ventas potenciales.",
         stats: [{
-            value: "95%",
-            label: "Precisión de datos",
-            desc: "Trazabilidad completa del embudo de ventas."
+            value: "100%",
+            label: "Control de Datos",
+            desc: "Trazabilidad completa para optimizar cada punto del embudo."
         }],
         image: "/images/service_analitica.png"
     },

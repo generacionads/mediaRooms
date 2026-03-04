@@ -108,7 +108,7 @@ export default function ServiciosModal({ isOpen, onClose, service, hideIcon = fa
 
                 {/* Button */}
                 {!hideButton && (
-                    <div className="w-full flex justify-center lg:justify-start">
+                    <div className="w-full flex justify-center">
                         <Link href="/calculadora" className="w-fit cursor-none" onClick={onClose}>
                             <BtnPry theme="dark" text="Calcula tu Ahorro" />
                         </Link>

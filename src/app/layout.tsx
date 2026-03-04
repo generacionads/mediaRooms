@@ -16,7 +16,7 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "MediaRooms | Reservas Directas",
-  description: "Llena tu hotel con reservas directas. Te ayudamos a conseguir más clientes sin depender de terceros.",
+  description: "Llena tu hotel con reservas directas. Te ayudamos a conseguir más huéspedes sin depender de terceros.",
 };
 
 export default function RootLayout({
