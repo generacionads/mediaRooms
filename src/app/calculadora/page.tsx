@@ -253,16 +253,12 @@ export default function CalculadoraPaso1() {
 
                                 <div className="bg-[#f0f9fa] rounded-[24px] p-[32px] lg:p-[48px] border border-[#48d7de] w-full flex flex-col items-center gap-[16px] my-[24px]">
                                     <p className="font-['Gebuk'] text-[#083e45] text-[64px] lg:text-[96px] leading-none">
-                                        {formatCurrency(ahorroEstimado)}
+                                        +{rentabilidad}%
                                     </p>
                                     <p className="font-sans text-[#1c5d63] text-[18px] lg:text-[20px] text-center">
-                                        Extra de beneficio limpio al año gracias a evitar las altas comisiones de terceros.
+                                        De rentabilidad extra en tus reservas por la reducción de las comisiones en OTAs.
                                     </p>
                                 </div>
-
-                                <p className="font-sans font-normal leading-tight text-[#083e45] text-[24px] lg:text-[32px] text-left w-full">
-                                    La rentabilidad pura de tus reservas crecería hasta un <span className="text-[#48d7de] font-bold">{rentabilidad}%</span>.
-                                </p>
 
                                 <div className="mt-[40px] flex w-full justify-center">
                                     <Link href="/contacto">
