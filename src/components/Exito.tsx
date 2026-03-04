@@ -30,7 +30,7 @@ const CASOS_DATA = [
     },
     {
         id: "madrid",
-        title: "Hotel 3* en Ibiza",
+        title: "Hotel 4* en Madrid",
         description: "Rediseño completo de la experiencia digital y motor de reservas personalizado. Incremento del 45% en conversión móvil durante el primer trimestre.",
         modalTitle: "Resultados tras el rediseño digital integral",
         modalDescription: "Modernizamos la presencia online para capturar reservas directas y ofrecer una experiencia premium desde el primer click.",
