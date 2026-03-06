@@ -50,13 +50,17 @@ export default function FloatingContact() {
     }, [pathname]);
 
     return (
-        <div className="fixed bottom-[48px] left-6 lg:left-[96px] flex flex-col items-start gap-[24px] z-40 pointer-events-auto">
-            <a href="tel:+34611191139">
-                <BtnRounded variant="telf-closed" isForcedOpen={isFooterVisible} />
-            </a>
-            <a href="mailto:hola@mediarooms.es">
-                <BtnRounded variant="mail-closed" isForcedOpen={isFooterVisible} />
-            </a>
+        <div className="fixed bottom-[48px] left-0 w-full pointer-events-none z-40 flex justify-center">
+            <div className="max-w-[1512px] w-full px-6 flex flex-col items-start gap-[24px]">
+                <div className="pointer-events-auto flex flex-col gap-[24px]">
+                    <a href="tel:+34611191139">
+                        <BtnRounded variant="telf-closed" isForcedOpen={isFooterVisible} />
+                    </a>
+                    <a href="mailto:hola@mediarooms.es">
+                        <BtnRounded variant="mail-closed" isForcedOpen={isFooterVisible} />
+                    </a>
+                </div>
+            </div>
         </div>
     );
 }
