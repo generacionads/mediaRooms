@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import BtnPry from "./BtnPry";
 import BtnMenu from "./BtnMenu";
-import Link from "next/link";
+import TransitionLink from "./TransitionLink";
 
 export type StatData = {
     value: string;
@@ -109,9 +109,9 @@ export default function ServiciosModal({ isOpen, onClose, service, hideIcon = fa
                 {/* Button */}
                 {!hideButton && (
                     <div className="w-full flex justify-center">
-                        <Link href="/calculadora" className="w-fit cursor-none" onClick={onClose}>
+                        <TransitionLink href="/calculadora" className="w-fit cursor-none" onClick={onClose}>
                             <BtnPry theme="dark" text="Calcula tu Ahorro" />
-                        </Link>
+                        </TransitionLink>
                     </div>
                 )}
 

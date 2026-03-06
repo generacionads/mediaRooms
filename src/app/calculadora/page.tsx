@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import TransitionLink from "@/components/ui/TransitionLink";
 import BtnPry from "@/components/ui/BtnPry";
 
 export default function CalculadoraPaso1() {
@@ -261,7 +262,7 @@ export default function CalculadoraPaso1() {
                                 </div>
 
                                 <div className="mt-[40px] flex w-full justify-center">
-                                    <Link href="/contacto">
+                                    <TransitionLink href="/contacto">
                                         <button type="button" className="bg-[#48d7de] rounded-[99px] px-[40px] py-[24px] flex items-center justify-center gap-[12px] w-fit hover:scale-[0.98] transition-transform active:scale-95 group">
                                             <p className="font-['Gebuk'] text-[32px] text-[#083e45] leading-[normal] mt-1">
                                                 Solicitar información
@@ -270,7 +271,7 @@ export default function CalculadoraPaso1() {
                                                 <path d="M6 18V8H9V12.75L15.8 5.95L18 8.15L11.15 15H16V18H6Z" fill="#083e45" />
                                             </svg>
                                         </button>
-                                    </Link>
+                                    </TransitionLink>
                                 </div>
                             </div>
                         )}

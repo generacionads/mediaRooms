@@ -152,6 +152,9 @@ export default function BtnPry({ className, theme = "cyan", text = "Calcula tu A
     const handleMouseLeave = () => {
         isHoveredRef.current = false;
 
+        // Freeze the button in its current state if a page transition has started
+        if (document.getElementById("page-transition-overlay")) return;
+
         // Rather than strictly locking pointer-events (which swallows fast clicks),
         // we just smoothly let the tracker return to 0 through the timeline progress.
         if (tlRef.current) {

@@ -4,7 +4,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
+import TransitionLink from "@/components/ui/TransitionLink";
 import BtnPry from "@/components/ui/BtnPry";
 
 if (typeof window !== "undefined") {
@@ -207,9 +207,9 @@ export default function SobreNosotros() {
 
                 {/* CTA Button placed directly below the image container */}
                 <div className="col-span-12 lg:col-span-10 flex justify-center lg:justify-end lg:col-start-3 mt-[40px] lg:mt-[60px]">
-                    <Link href="/calculadora" className="w-fit cursor-pointer">
+                    <TransitionLink href="/calculadora" className="w-fit cursor-pointer">
                         <BtnPry theme="cyan" text="Infórmate gratis" />
-                    </Link>
+                    </TransitionLink>
                 </div>
 
             </div>

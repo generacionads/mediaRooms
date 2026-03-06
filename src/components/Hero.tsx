@@ -1,6 +1,6 @@
 import BtnPry from "@/components/ui/BtnPry";
 import { BackgroundCircles } from "@/components/ui/BackgroundCircles";
-import Link from "next/link";
+import TransitionLink from "@/components/ui/TransitionLink";
 
 export default function Hero() {
     return (
@@ -19,9 +19,9 @@ export default function Hero() {
                     </h1>
 
                     {/* CTA Button */}
-                    <Link href="/calculadora" className="mb-[64px] pointer-events-auto block w-fit">
+                    <TransitionLink href="/calculadora" className="mb-[64px] pointer-events-auto block w-fit">
                         <BtnPry theme="cyan" />
-                    </Link>
+                    </TransitionLink>
 
                 </div>
             </div>
