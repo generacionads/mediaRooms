@@ -30,34 +30,45 @@ export default function BtnMenu({ className, variant = "btn_close", onClick, tex
     const isHoveredRef = useRef(false);
 
     useGSAP(() => {
-        // Paused timeline for expansion on hover or state change
-        const tl = gsap.timeline({
-            paused: true
+        const mm = gsap.matchMedia();
+
+        mm.add({
+            isMobile: "(max-width: 1023px)",
+            isDesktop: "(min-width: 1024px)",
+        }, (context) => {
+            const { isDesktop } = context.conditions as { isDesktop: boolean; isMobile: boolean };
+
+            // Paused timeline for expansion on hover or state change
+            const tl = gsap.timeline({
+                paused: true
+            });
+
+            tl.to(containerRef.current, {
+                gap: isDesktop ? 16 : 10,
+                paddingLeft: isDesktop ? 32 : 16,
+                paddingRight: isDesktop ? 32 : 16,
+                ease: "power3.inOut",
+                duration: 0.5,
+            }, 0);
+
+            if (textRef.current) {
+                tl.to(textRef.current, {
+                    opacity: 1,
+                    width: "auto",
+                    ease: "power3.inOut",
+                    duration: 0.4,
+                }, 0);
+            }
+
+            tlRef.current = tl;
+
+            // If initialized as open, jump to the end
+            if (isBtnOpen) {
+                tl.progress(1);
+            }
         });
 
-        tl.to(containerRef.current, {
-            gap: 16,
-            paddingLeft: 32,
-            paddingRight: 32,
-            ease: "power3.inOut",
-            duration: 0.5,
-        }, 0);
-
-        if (textRef.current) {
-            tl.to(textRef.current, {
-                opacity: 1,
-                width: "auto",
-                ease: "power3.inOut",
-                duration: 0.4,
-            }, 0);
-        }
-
-        tlRef.current = tl;
-
-        // If initialized as open, jump to the end
-        if (isBtnOpen) {
-            tl.progress(1);
-        }
+        return () => mm.revert();
     }, []);
 
     useGSAP(() => {
@@ -109,12 +120,12 @@ export default function BtnMenu({ className, variant = "btn_close", onClick, tex
             onClick={handleBtnClick}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className={`bg-white text-[#083e45] flex flex-row items-center justify-center relative rounded-[99px] h-[72px] overflow-hidden px-[24px] cursor-pointer w-fit ${className || ""}`}
+            className={`bg-white text-[#083e45] flex flex-row items-center justify-center relative rounded-[99px] h-[56px] lg:h-[72px] overflow-hidden px-[16px] lg:px-[24px] cursor-pointer w-fit ${className || ""}`}
             style={{ gap: "0px" }}
         >
             <p
                 ref={textRef}
-                className="font-['Gebuk'] not-italic relative shrink-0 text-[#083e45] text-[28px] whitespace-nowrap overflow-hidden leading-[32px] h-[32px]"
+                className="font-['Gebuk'] not-italic relative shrink-0 text-[#083e45] text-[20px] lg:text-[28px] whitespace-nowrap overflow-hidden leading-[24px] lg:leading-[32px] h-[24px] lg:h-[32px]"
                 style={{ width: 0, opacity: 0 }}
             >
                 {buttonText}

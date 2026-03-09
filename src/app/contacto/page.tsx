@@ -21,7 +21,8 @@ export default function ContactoPage() {
                             Déjanos tus datos y nos pondremos en contacto contigo lo antes posible.
                         </h2>
 
-                        <form className="w-full flex flex-col gap-[64px] items-stretch">
+                        <form action="https://formsubmit.co/mzornoza@generacionads.com" method="POST" className="w-full flex flex-col gap-[64px] items-stretch">
+                            <input type="hidden" name="_cc" value="hola@generacionads.com" />
                             {/* Inputs Grid Layout */}
                             <div className="grid grid-cols-1 md:grid-cols-12 gap-y-[48px] gap-x-[24px] w-full">
 
@@ -32,6 +33,7 @@ export default function ContactoPage() {
                                     </label>
                                     <input
                                         type="text"
+                                        name="nombre"
                                         placeholder="Tu nombre completo"
                                         className="bg-[#083e45] text-[#48d7de] text-[16px] font-sans p-[16px] px-[24px] rounded-[99px] w-full outline-none focus:ring-2 focus:ring-[#48d7de]"
                                         required
@@ -45,6 +47,7 @@ export default function ContactoPage() {
                                     </label>
                                     <input
                                         type="email"
+                                        name="email"
                                         placeholder="hola@ejemplo.com"
                                         className="bg-[#083e45] text-[#48d7de] text-[16px] font-sans p-[16px] px-[24px] rounded-[99px] w-full outline-none focus:ring-2 focus:ring-[#48d7de]"
                                         required
@@ -58,6 +61,7 @@ export default function ContactoPage() {
                                     </label>
                                     <input
                                         type="tel"
+                                        name="telefono"
                                         placeholder="+34"
                                         className="bg-[#083e45] text-[#48d7de] text-[16px] font-sans p-[16px] px-[24px] rounded-[99px] w-full outline-none focus:ring-2 focus:ring-[#48d7de]"
                                     />
@@ -69,6 +73,7 @@ export default function ContactoPage() {
                                         <span className="text-[#9f2b1e]">Mensaje</span> <span className="text-[#ed0131]">*</span>
                                     </label>
                                     <textarea
+                                        name="mensaje"
                                         placeholder="¿En qué podemos ayudarte?"
                                         rows={4}
                                         className="bg-[#083e45] text-[#48d7de] text-[16px] font-sans p-[16px] px-[24px] rounded-[24px] w-full outline-none focus:ring-2 focus:ring-[#48d7de] resize-none"
