@@ -15,19 +15,19 @@ const TEAM_MEMBERS = [
     {
         id: "miembro1",
         name: "Patri",
-        role: "Especialista en Publi",
+        role: "Especialista en PPC y gestión de cuentas",
         position: { top: "45%", left: "23%" } // Left girl
     },
     {
         id: "miembro2",
         name: "Javi",
-        role: "Especialista SEO",
+        role: "Co-Fundador y SEO",
         position: { top: "60%", left: "33%" } // Middle-left sitting guy
     },
     {
         id: "miembro3",
         name: "Mario",
-        role: "Hace cosas",
+        role: "Diseño UI/UX y Frontend",
         position: { top: "38%", left: "45%" } // Middle standing guy
     },
     {
@@ -39,7 +39,7 @@ const TEAM_MEMBERS = [
     {
         id: "miembro5",
         name: "Antonio",
-        role: "Especialist en Marketing",
+        role: "Co-Fundador y Marketing Online",
         position: { top: "56%", left: "71.5%" } // Far-right sitting guy
     }
 ];
